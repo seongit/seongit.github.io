@@ -5,24 +5,23 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 
 {
   hasEducation && (
-    <section id="education" class="p-8 sm:p-12 md:p-16 lg:p-24">
-      <div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
-            <h2 class="type-section text-ink">Education</h2>
-            <div class="w-[75px] h-[5px] mt-3 rounded-full bg-accent" />
+    <section id="education" class="resume-section scroll-mt-20">
+      <div class="resume-section-inner">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
+          <div class="lg:col-span-3">
+            <h2 class="resume-heading">Education</h2>
           </div>
 
-          <div class="lg:col-span-8">
+          <div class="lg:col-span-9">
             <div class="space-y-8">
               {siteConfig.education.map((edu) => (
-                <div class="bg-surface rounded-lg border border-ink/15 p-4 sm:p-5 md:p-6 transition-shadow duration-300 hover:shadow-md">
+                <div class="border-t border-accent/25 pt-6">
                   <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
                     <div>
-                      <h3 class="type-role text-lg sm:text-xl text-ink">
+                      <h3 class="text-2xl font-bold text-ink">
                         {edu.degree}
                       </h3>
-                      <p class="text-base sm:text-lg text-accent">
+                      <p class="mt-2 text-base sm:text-lg text-ink/75">
                         {edu.school}
                       </p>
                     </div>
@@ -31,14 +30,9 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
                     </span>
                   </div>
 
-                  <ul class="space-y-2">
+                  <ul class="list-disc space-y-2 pl-5 text-base leading-7 text-ink/80">
                     {edu.achievements.map((achievement) => (
-                      <li class="flex items-start">
-                        <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent mt-2 mr-3 flex-shrink-0" />
-                        <span class="text-sm sm:text-base text-ink/70">
-                          {achievement}
-                        </span>
-                      </li>
+                      <li>{achievement}</li>
                     ))}
                   </ul>
                 </div>

@@ -9,16 +9,16 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 
 <header
   id="header"
-  class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
+  class="fixed left-0 right-0 top-0 z-50 hidden translate-y-[-100%] opacity-0 transition-all duration-300 md:block"
 >
-  <nav class="max-w-7xl mx-auto px-8 py-4">
+  <nav class="mx-auto max-w-6xl px-8 py-4">
     <ul class="flex items-center gap-8 justify-center">
       <li>
         <a
           href="#about"
-          class="text-ink/70 hover:text-accent transition-colors font-bold"
+          class="text-sm font-bold text-ink/70 transition-colors hover:text-accent"
         >
-          About
+          소개
         </a>
       </li>
       {
@@ -26,9 +26,9 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <li>
             <a
               href="#problem-solving"
-              class="text-ink/70 hover:text-accent transition-colors font-bold"
+              class="text-sm font-bold text-ink/70 transition-colors hover:text-accent"
             >
-              Problem Solving
+              주요 성과
             </a>
           </li>
         )
@@ -38,7 +38,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <li>
             <a
               href="#articles"
-              class="text-ink/70 hover:text-accent transition-colors font-bold"
+              class="text-sm font-bold text-ink/70 transition-colors hover:text-accent"
             >
               Blog
             </a>
@@ -50,9 +50,9 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <li>
             <a
               href="#experience"
-              class="text-ink/70 hover:text-accent transition-colors font-bold"
+              class="text-sm font-bold text-ink/70 transition-colors hover:text-accent"
             >
-              Experience
+              경력
             </a>
           </li>
         )
@@ -62,7 +62,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <li>
             <a
               href="#education"
-              class="text-ink/70 hover:text-accent transition-colors font-bold"
+              class="text-sm font-bold text-ink/70 transition-colors hover:text-accent"
             >
               Education
             </a>
@@ -77,9 +77,23 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
   window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
     if (window.scrollY > 100) {
-      header?.classList.add("bg-page/80", "backdrop-blur-sm");
+      header?.classList.add(
+        "translate-y-0",
+        "opacity-100",
+        "bg-page/85",
+        "backdrop-blur-sm",
+        "border-b",
+        "border-accent/20",
+      );
     } else {
-      header?.classList.remove("bg-page/80", "backdrop-blur-sm");
+      header?.classList.remove(
+        "translate-y-0",
+        "opacity-100",
+        "bg-page/85",
+        "backdrop-blur-sm",
+        "border-b",
+        "border-accent/20",
+      );
     }
   });
 </script>

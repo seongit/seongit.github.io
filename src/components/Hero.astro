@@ -1,228 +1,191 @@
 ---
 import { siteConfig } from "../config";
 
-const { onboarding, social } = siteConfig;
+const { resumeHero, aboutMe } = siteConfig;
 
-const socialLinks = [
-  social?.email
-    ? {
-        href: `mailto:${social.email}`,
-        label: "Email",
-        external: false,
-        paths: [
-          "M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z",
-          "M3 7l9 6l9 -6",
-        ],
-      }
-    : null,
-  social?.blog
-    ? {
-        href: social.blog,
-        label: "Blog",
-        external: true,
-        paths: [
-          "M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
-          "M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
-          "M3 6v13",
-          "M12 6v13",
-          "M21 6v13",
-        ],
-      }
-    : null,
-  social?.linkedin
-    ? {
-        href: social.linkedin,
-        label: "LinkedIn",
-        external: true,
-        paths: [
-          "M8 11v5",
-          "M8 8v.01",
-          "M12 16v-5",
-          "M16 16v-3a2 2 0 1 0 -4 0",
-          "M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z",
-        ],
-      }
-    : null,
-  social?.twitter
-    ? {
-        href: social.twitter,
-        label: "Twitter",
-        external: true,
-        paths: [
-          "M4 4l11.733 16h4.267l-11.733 -16z",
-          "M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772",
-        ],
-      }
-    : null,
-  social?.github
-    ? {
-        href: social.github,
-        label: "GitHub",
-        external: true,
-        paths: [
-          "M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5",
-        ],
-      }
-    : null,
-].filter(Boolean);
+const iconPaths = {
+  mail: [
+    "M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z",
+    "M3 7l9 6l9 -6",
+  ],
+  book: [
+    "M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
+    "M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
+    "M3 6v13",
+    "M12 6v13",
+    "M21 6v13",
+  ],
+  portfolio: [
+    "M10 6h4",
+    "M10 12h4",
+    "M10 18h4",
+    "M5 6h.01",
+    "M5 12h.01",
+    "M5 18h.01",
+    "M19 6h.01",
+    "M19 12h.01",
+    "M19 18h.01",
+  ],
+};
 ---
 
-<section
-  id="hero"
-  class="onboarding relative isolate flex min-h-screen flex-col overflow-hidden bg-page"
->
-  <!-- 섹션 상단을 여는 미세한 오렌지 라인 (시스템의 '오렌지 라인' 규칙) -->
-  <div class="absolute inset-x-0 top-0 h-1 bg-accent"></div>
-
-  <div
-    class="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-24 sm:px-10 md:px-16 lg:px-20"
-  >
-    <p
-      class="onboarding-reveal type-role text-sm uppercase tracking-[0.2em] text-ink/55 sm:text-base"
+<section id="hero" class="resume-hero bg-page">
+  <div class="bg-accent text-page">
+    <div
+      class="mx-auto flex max-w-6xl flex-col items-center px-6 pb-10 pt-12 text-center sm:px-10 sm:pb-12 sm:pt-14 lg:px-12"
     >
-      {onboarding.eyebrow}
-    </p>
+      <p class="text-sm font-bold text-page/70 sm:text-base">
+        {resumeHero.koreanName}
+      </p>
 
-    <h1
-      class="onboarding-reveal onboarding-delay-1 type-display mt-6 max-w-4xl text-balance text-ink"
-    >
-      {
-        onboarding.headline.map((line, lineIndex) => (
-          <span class="block">
-            {line.map((part) =>
-              part.accent ? (
-                <span class="text-accent">{part.text}</span>
-              ) : (
-                <span>{part.text}</span>
-              ),
-            )}
-            {lineIndex < onboarding.headline.length - 1 ? " " : null}
-          </span>
-        ))
-      }
-    </h1>
-
-    <p
-      class="onboarding-reveal onboarding-delay-2 mt-7 max-w-2xl text-pretty text-base text-ink/70 sm:text-lg"
-    >
-      {onboarding.subtitle}
-    </p>
-
-    <div class="onboarding-reveal onboarding-delay-3 mt-9 flex">
-      <a
-        href={onboarding.primaryCta.href}
-        data-onboarding-cta
-        class="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-bold text-page transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-page sm:text-base"
+      <h1
+        class="mt-3 font-role text-4xl font-bold leading-tight text-page sm:text-6xl lg:text-7xl"
       >
-        {onboarding.primaryCta.label}
-        <span aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
+        {resumeHero.englishName}
+      </h1>
 
-    {
-      socialLinks.length > 0 && (
-        <div class="onboarding-reveal onboarding-delay-4 mt-12 flex items-center gap-x-5 text-ink/70">
-          {socialLinks.map((link) => (
+      <div
+        class="mt-5 flex w-full max-w-3xl items-center justify-center gap-5 text-page/75"
+      >
+        <span class="h-px flex-1 bg-page/55"></span>
+        <p class="font-role text-xs font-medium sm:text-sm">
+          {resumeHero.role}
+        </p>
+        <span class="h-px flex-1 bg-page/55"></span>
+      </div>
+
+      <div
+        class="mt-8 grid w-full max-w-4xl grid-cols-1 gap-4 text-page/85 sm:grid-cols-3 sm:divide-x sm:divide-page/35"
+      >
+        {
+          resumeHero.contacts.map((contact) => (
             <a
-              href={link.href}
-              aria-label={link.label}
-              {...(link.external
+              href={contact.href}
+              aria-label={contact.label}
+              class="flex flex-col items-center gap-2 px-4 py-1 transition-colors hover:text-page"
+              {...(contact.href.startsWith("http")
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
-              class="transition-colors duration-300 hover:text-accent"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.8"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="h-6 w-6"
+                class="h-5 w-5"
+                aria-hidden="true"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                {link.paths.map((d) => (
+                {iconPaths[contact.icon].map((d) => (
                   <path d={d} />
                 ))}
               </svg>
+              <span class="text-xs font-medium sm:text-sm">{contact.text}</span>
             </a>
-          ))}
-        </div>
-      )
-    }
+          ))
+        }
+      </div>
+    </div>
   </div>
 
-  <!-- 스크롤 힌트 -->
-  <a
-    href={onboarding.primaryCta.href}
-    data-onboarding-cta
-    aria-label={onboarding.primaryCta.label}
-    class="onboarding-reveal onboarding-delay-4 absolute bottom-6 left-1/2 -translate-x-1/2 text-ink/40 transition-colors hover:text-accent"
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-8 border-b border-accent/25 px-6 py-10 sm:px-10 md:flex-row md:items-center lg:px-12 lg:py-12"
   >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="h-6 w-6 animate-bounce"
-    >
-      <path d="M6 9l6 6l6 -6" />
-    </svg>
-  </a>
+    <div class="relative mx-auto h-40 w-40 shrink-0 md:mx-0 md:h-48 md:w-48">
+      <div class="absolute inset-0 rounded-full border border-accent/35"></div>
+      <img
+        src={resumeHero.profileImage}
+        alt={resumeHero.profileAlt}
+        class="absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] rounded-full object-cover"
+        width="584"
+        height="584"
+      />
+    </div>
+
+    <div class="flex-1 text-ink">
+      <p class="text-sm font-bold text-accent sm:text-base">
+        {resumeHero.role}
+      </p>
+
+      <h2
+        class="mt-3 text-balance text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl"
+      >
+        <span class="block">{resumeHero.greeting}</span>
+        <span class="block"><span data-rotator-word data-rotator-words={JSON.stringify(resumeHero.rotatorWords)} class="rotator-word inline-block text-accent" aria-live="polite">{resumeHero.rotatorWords[0]}</span><span data-rotator-particle>{resumeHero.particle}</span> {resumeHero.assetSuffix}</span>
+        <span class="block">{resumeHero.closing}</span>
+      </h2>
+
+      <div class="mt-6 space-y-3 text-sm leading-7 text-ink/80 sm:text-base">
+        {
+          aboutMe.slice(1).map((paragraph) => (
+            <p>
+              {paragraph.map((segment) =>
+                segment.bold ? (
+                  <strong class="font-bold text-ink">{segment.text}</strong>
+                ) : (
+                  segment.text
+                ),
+              )}
+            </p>
+          ))
+        }
+      </div>
+    </div>
+  </div>
 </section>
 
 <script is:inline>
-  document.querySelectorAll("[data-onboarding-cta]").forEach((cta) => {
-    cta.addEventListener("click", (event) => {
-      const targetId = cta.getAttribute("href");
-      if (!targetId || !targetId.startsWith("#")) return;
-      const target = document.querySelector(targetId);
-      if (!target) return;
-      event.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      if (history.replaceState) {
-        history.replaceState(null, "", targetId);
-      }
-    });
-  });
+  const rotator = document.querySelector("[data-rotator-word]");
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (rotator && !prefersReducedMotion) {
+    const particle = document.querySelector("[data-rotator-particle]");
+    const words = JSON.parse(rotator.dataset.rotatorWords || "[]");
+    let activeIndex = 0;
+    const hasBatchim = (word) => {
+      const code = word.charCodeAt(word.length - 1);
+      return code >= 0xac00 && code <= 0xd7a3 && (code - 0xac00) % 28 !== 0;
+    };
+
+    window.setInterval(() => {
+      if (words.length < 2) return;
+      activeIndex = (activeIndex + 1) % words.length;
+      rotator.classList.add("is-changing");
+
+      window.setTimeout(() => {
+        const nextWord = words[activeIndex];
+        rotator.textContent = nextWord;
+        if (particle) {
+          particle.textContent = hasBatchim(nextWord) ? "을" : "를";
+        }
+        rotator.classList.remove("is-changing");
+      }, 180);
+    }, 1800);
+  }
 </script>
 
 <style>
-  @keyframes onboardingReveal {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .rotator-word {
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
   }
 
-  .onboarding-reveal {
-    animation: onboardingReveal 0.7s ease-out both;
-  }
-
-  .onboarding-delay-1 {
-    animation-delay: 0.1s;
-  }
-  .onboarding-delay-2 {
-    animation-delay: 0.25s;
-  }
-  .onboarding-delay-3 {
-    animation-delay: 0.4s;
-  }
-  .onboarding-delay-4 {
-    animation-delay: 0.55s;
+  .rotator-word.is-changing {
+    transform: translateY(0.25rem);
+    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .onboarding-reveal {
-      animation: none;
+    .rotator-word {
+      transition: none;
     }
   }
 </style>

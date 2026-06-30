@@ -3,6 +3,38 @@ export const siteConfig = {
   title: "Full Stack Engineer",
   description: "Portfolio website of SeongEun Kim",
   accentColor: "#C8644F",
+  resumeHero: {
+    koreanName: "김성은",
+    englishName: "SEONGEUN KIM",
+    role: "Full Stack Engineer",
+    greeting: "안녕하세요",
+    rotatorWords: ["지식", "경험", "노하우"],
+    particle: "을",
+    assetSuffix: "자산으로 만드는",
+    closing: "풀스택 개발자 김성은입니다.",
+    profileImage: "/profile-seongeun.png",
+    profileAlt: "김성은 프로필 사진",
+    contacts: [
+      {
+        label: "Email",
+        text: "dev.seongeun@gmail.com",
+        href: "mailto:dev.seongeun@gmail.com",
+        icon: "mail",
+      },
+      {
+        label: "Blog",
+        text: "개발 블로그",
+        href: "https://seongeun-it.tistory.com/",
+        icon: "book",
+      },
+      {
+        label: "GitHub",
+        text: "GitHub",
+        href: "https://github.com/seongit",
+        icon: "portfolio",
+      },
+    ],
+  },
   // 첫 화면(100vh) 온보딩 히어로 카피/CTA. 모든 값은 이 한 곳에서 관리한다.
   onboarding: {
     // 상단 작은 레이블
@@ -35,8 +67,8 @@ export const siteConfig = {
   aboutTitle: "풀스택 개발자, 김성은",
   aboutMe: [
     [
-      { text: "개인의 경험을 팀의 자산", bold: true },
-      { text: "으로 만드는 팀 플레이어형 풀스택 개발자 김성은입니다." },
+      { text: "지식을 자산", bold: true },
+      { text: "으로 만드는 풀스택 개발자 김성은입니다." },
     ],
     [
       { text: "인프런 상위 1.12% 학습량", bold: true },

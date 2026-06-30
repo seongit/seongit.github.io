@@ -8,16 +8,15 @@ const hasBlogPosts = posts.length > 0;
 
 {
   hasBlogPosts && (
-    <section id="articles" class="p-8 sm:p-12 md:p-16 lg:p-24 bg-page">
-      <div>
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-          <div class="lg:col-span-4">
-            <h2 class="type-section text-ink">{siteConfig.blog.title}</h2>
-            <div class="w-[75px] h-[5px] mt-3 rounded-full bg-accent" />
+    <section id="articles" class="resume-section scroll-mt-20 bg-page">
+      <div class="resume-section-inner">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
+          <div class="lg:col-span-3">
+            <h2 class="resume-heading">{siteConfig.blog.title}</h2>
           </div>
 
-          <div class="lg:col-span-8">
-            <p class="text-base sm:text-lg text-ink/70">
+          <div class="lg:col-span-9">
+            <p class="text-base leading-7 text-ink/75 sm:text-lg">
               {siteConfig.blog.description}
             </p>
 
@@ -27,7 +26,7 @@ const hasBlogPosts = posts.length > 0;
                   href={post.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="group overflow-hidden rounded-lg border border-ink/15 bg-surface transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-accent"
+                  class="group overflow-hidden border border-accent/25 bg-surface transition duration-300 hover:-translate-y-1 hover:border-accent"
                 >
                   <div class="aspect-[16/9] border-b border-ink/10">
                     {post.image ? (
@@ -81,11 +80,11 @@ const hasBlogPosts = posts.length > 0;
             {siteConfig.social.blog && (
               <div class="mt-8 flex justify-center">
                 <a
-                  href={siteConfig.social.blog}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 rounded-full border border-accent px-5 py-2.5 text-sm font-bold text-accent transition hover:bg-accent hover:text-page"
-                >
+                href={siteConfig.social.blog}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 border border-accent px-5 py-2.5 text-sm font-bold text-accent transition hover:bg-accent hover:text-page"
+              >
                   블로그로 이동
                   <svg
                     class="h-4 w-4"
