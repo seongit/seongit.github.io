@@ -1,5 +1,67 @@
 @import "tailwindcss";
 
+/*
+ * 이력서 디자인 시스템 — 단일 진실 원천(SSOT)
+ * 색상은 딱 3색만 사용한다.
+ *   - page   : #F3EFE3  크림 배경 (순수 흰색 아님)
+ *   - surface: #FAF7F0  웜 오프화이트 카드 표면 (크림보다 살짝 밝은 따뜻한 톤, 순수 흰색 아님)
+ *   - accent : #C8644F  빈티지 오렌지 (섹션 라인/강조)
+ *   - ink    : #2F2A26  웜 블랙 (제목/본문). 위계는 opacity로만 표현.
+ * 타이포: Noto Sans KR(400/700/900) 본문·제목, DM Sans Medium(500) 역할명/직함 전용.
+ * 시스템값: letter-spacing -0.03em, line-height 1.46.
+ */
+@theme {
+  --color-page: #f3efe3;
+  --color-surface: #faf7f0;
+  --color-accent: #c8644f;
+  --color-ink: #2f2a26;
+
+  --font-sans:
+    "Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-role: "DM Sans", "Noto Sans KR", system-ui, sans-serif;
+}
+
+:root {
+  /* 컴포넌트 인라인 style 호환용 별칭 (3색 토큰) */
+  --color-bg: var(--color-page);
+  --color-text: var(--color-ink);
+  /* accent 는 인라인 style 에서 그대로 참조 */
+  --accent-color: var(--color-accent);
+}
+
 body {
-  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  letter-spacing: -0.03em;
+  line-height: 1.46;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * 3단 위계 유틸리티. clamp 로 px 위계(90/54/28)를 반응형으로 환산한다.
+ * Display → 온보딩 헤드라인, Section → 섹션 제목, Body → 본문/칩/캡션/연도.
+ */
+.type-display {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.type-section {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(1.875rem, 5vw, 3.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+/* 역할명/직함 전용 — DM Sans Medium */
+.type-role {
+  font-family: var(--font-role);
+  font-weight: 500;
+  letter-spacing: -0.03em;
 }

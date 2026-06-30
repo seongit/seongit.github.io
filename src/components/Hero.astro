@@ -1,284 +1,201 @@
 ---
 import { siteConfig } from "../config";
+
+const { onboarding, social } = siteConfig;
+
+const socialLinks = [
+  social?.email
+    ? {
+        href: `mailto:${social.email}`,
+        label: "Email",
+        external: false,
+        paths: [
+          "M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z",
+          "M3 7l9 6l9 -6",
+        ],
+      }
+    : null,
+  social?.blog
+    ? {
+        href: social.blog,
+        label: "Blog",
+        external: true,
+        paths: [
+          "M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
+          "M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
+          "M3 6v13",
+          "M12 6v13",
+          "M21 6v13",
+        ],
+      }
+    : null,
+  social?.linkedin
+    ? {
+        href: social.linkedin,
+        label: "LinkedIn",
+        external: true,
+        paths: [
+          "M8 11v5",
+          "M8 8v.01",
+          "M12 16v-5",
+          "M16 16v-3a2 2 0 1 0 -4 0",
+          "M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z",
+        ],
+      }
+    : null,
+  social?.twitter
+    ? {
+        href: social.twitter,
+        label: "Twitter",
+        external: true,
+        paths: [
+          "M4 4l11.733 16h4.267l-11.733 -16z",
+          "M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772",
+        ],
+      }
+    : null,
+  social?.github
+    ? {
+        href: social.github,
+        label: "GitHub",
+        external: true,
+        paths: [
+          "M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5",
+        ],
+      }
+    : null,
+].filter(Boolean);
 ---
 
-<div
+<section
   id="hero"
-  class="relative isolate overflow-hidden bg-white py-24 md:h-screen"
-  style={`--accent-color: ${siteConfig.accentColor}`}
+  class="onboarding relative isolate flex min-h-screen flex-col overflow-hidden bg-page"
 >
-  <!-- Gradient overlay -->
+  <!-- 섹션 상단을 여는 미세한 오렌지 라인 (시스템의 '오렌지 라인' 규칙) -->
+  <div class="absolute inset-x-0 top-0 h-1 bg-accent"></div>
+
   <div
-    class="absolute inset-0 -z-10"
-    style={`background: radial-gradient(ellipse 800px 1200px at 0% 0%, ${siteConfig.accentColor}40 0%, ${siteConfig.accentColor}25 20%, ${siteConfig.accentColor}10 40%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0.8) 90%, white 100%)`}
+    class="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center px-6 py-24 sm:px-10 md:px-16 lg:px-20"
   >
-  </div>
-  <svg
-    aria-hidden="true"
-    class="absolute inset-0 -z-10 size-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
-  >
-    <defs>
-      <pattern
-        x="50%"
-        y={-1}
-        id="0787a7c5-978c-4f66-83c7-11c213f99cb7"
-        width={200}
-        height={200}
-        patternUnits="userSpaceOnUse"
+    <p
+      class="onboarding-reveal type-role text-sm uppercase tracking-[0.2em] text-ink/55 sm:text-base"
+    >
+      {onboarding.eyebrow}
+    </p>
+
+    <h1
+      class="onboarding-reveal onboarding-delay-1 type-display mt-6 max-w-4xl text-balance text-ink"
+    >
+      {
+        onboarding.headline.map((line, lineIndex) => (
+          <span class="block">
+            {line.map((part) =>
+              part.accent ? (
+                <span class="text-accent">{part.text}</span>
+              ) : (
+                <span>{part.text}</span>
+              ),
+            )}
+            {lineIndex < onboarding.headline.length - 1 ? " " : null}
+          </span>
+        ))
+      }
+    </h1>
+
+    <p
+      class="onboarding-reveal onboarding-delay-2 mt-7 max-w-2xl text-pretty text-base text-ink/70 sm:text-lg"
+    >
+      {onboarding.subtitle}
+    </p>
+
+    <div class="onboarding-reveal onboarding-delay-3 mt-9 flex">
+      <a
+        href={onboarding.primaryCta.href}
+        data-onboarding-cta
+        class="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-bold text-page transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-page sm:text-base"
       >
-        <path d="M.5 200V.5H200" fill="none"></path>
-      </pattern>
-      <pattern
-        id="programming-symbols"
-        x="0"
-        y="0"
-        width="400"
-        height="400"
-        patternUnits="userSpaceOnUse"
-      >
-        <text
-          x="50"
-          y="50"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="24"
-          transform="rotate(-15)">&lt;/&gt;</text
-        >
-        <text
-          x="150"
-          y="100"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="20"
-          transform="rotate(10)">{}</text
-        >
-        <text
-          x="250"
-          y="80"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="18"
-          transform="rotate(-5)">=&gt;</text
-        >
-        <text
-          x="100"
-          y="200"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="22"
-          transform="rotate(15)">[]</text
-        >
-        <text
-          x="300"
-          y="180"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="20"
-          transform="rotate(-10)">&lt;&gt;</text
-        >
-        <text
-          x="200"
-          y="250"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="24"
-          transform="rotate(5)">()</text
-        >
-        <text
-          x="50"
-          y="320"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="18"
-          transform="rotate(-8)">::</text
-        >
-        <text
-          x="350"
-          y="300"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="22"
-          transform="rotate(12)">==</text
-        >
-        <text
-          x="150"
-          y="350"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="20"
-          transform="rotate(-15)">++</text
-        >
-        <text
-          x="250"
-          y="370"
-          fill={siteConfig.accentColor}
-          font-family="monospace"
-          font-size="24"
-          transform="rotate(8)">;</text
-        >
-      </pattern>
-    </defs>
-    <rect
-      fill="url(#programming-symbols)"
-      width="100%"
-      height="100%"
-      opacity="0.2"></rect>
-    <rect
-      fill="url(#0787a7c5-978c-4f66-83c7-11c213f99cb7)"
-      width="100%"
-      height="100%"
-      stroke-width={0}></rect>
-  </svg>
-  <div class="h-full mx-auto p-8 sm:p-12 md:p-24 flex items-center">
-    <div>
-      <h2
-        class="text-pretty text-xl sm:text-2xl md:text-5xl font-bold tracking-tight text-gray-700 animate-fade-in"
-      >
-        Hello! 👋
-      </h2>
-      <h1
-        class="mt-6 sm:mt-8 md:mt-10 text-pretty text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-gray-800 animate-fade-in animation-delay-200"
-      >
-        I'm <span style={{ color: siteConfig.accentColor }}
-          >{siteConfig.name}</span
-        >
-      </h1>
-      <p
-        class="mt-4 sm:mt-6 md:mt-8 text-pretty text-base sm:text-lg md:text-xl/8 font-medium text-gray-600 animate-fade-in animation-delay-400"
-      >
-        {siteConfig.title}
-      </p>
+        {onboarding.primaryCta.label}
+        <span aria-hidden="true">&rarr;</span>
+      </a>
     </div>
+
+    {
+      socialLinks.length > 0 && (
+        <div class="onboarding-reveal onboarding-delay-4 mt-12 flex items-center gap-x-5 text-ink/70">
+          {socialLinks.map((link) => (
+            <a
+              href={link.href}
+              aria-label={link.label}
+              {...(link.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              class="transition-colors duration-300 hover:text-accent"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="h-6 w-6"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                {link.paths.map((d) => (
+                  <path d={d} />
+                ))}
+              </svg>
+            </a>
+          ))}
+        </div>
+      )
+    }
   </div>
-  <div
-    class="absolute bottom-0 left-0 right-0 p-8 sm:p-12 md:p-24 flex gap-x-4 sm:gap-x-6 md:gap-x-8 text-gray-700 animate-fade-in animation-delay-600"
+
+  <!-- 스크롤 힌트 -->
+  <a
+    href={onboarding.primaryCta.href}
+    data-onboarding-cta
+    aria-label={onboarding.primaryCta.label}
+    class="onboarding-reveal onboarding-delay-4 absolute bottom-6 left-1/2 -translate-x-1/2 text-ink/40 transition-colors hover:text-accent"
   >
-    {
-      siteConfig.social?.email && (
-        <a
-          href={`mailto:${siteConfig.social.email}`}
-          aria-label="Email"
-          class="transition-colors duration-300 hover:text-[var(--accent-color)]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
-            <path d="M3 7l9 6l9 -6" />
-          </svg>
-        </a>
-      )
-    }
-    {
-      siteConfig.social?.linkedin && (
-        <a
-          href={siteConfig.social.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn"
-          class="transition-colors duration-300 hover:text-[var(--accent-color)]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
-          >
-            <>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M8 11v5" />
-              <path d="M8 8v.01" />
-              <path d="M12 16v-5" />
-              <path d="M16 16v-3a2 2 0 1 0 -4 0" />
-              <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" />
-            </>
-          </svg>
-        </a>
-      )
-    }
-    {
-      siteConfig.social?.twitter && (
-        <a
-          href={siteConfig.social.twitter}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Twitter"
-          class="transition-colors duration-300 hover:text-[var(--accent-color)]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
-          >
-            <>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-              <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-            </>
-          </svg>
-        </a>
-      )
-    }
-    {
-      siteConfig.social?.github && (
-        <a
-          href={siteConfig.social.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-          class="transition-colors duration-300 hover:text-[var(--accent-color)]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8"
-          >
-            <>
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
-            </>
-          </svg>
-        </a>
-      )
-    }
-  </div>
-</div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="h-6 w-6 animate-bounce"
+    >
+      <path d="M6 9l6 6l6 -6" />
+    </svg>
+  </a>
+</section>
+
+<script is:inline>
+  document.querySelectorAll("[data-onboarding-cta]").forEach((cta) => {
+    cta.addEventListener("click", (event) => {
+      const targetId = cta.getAttribute("href");
+      if (!targetId || !targetId.startsWith("#")) return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (history.replaceState) {
+        history.replaceState(null, "", targetId);
+      }
+    });
+  });
+</script>
 
 <style>
-  @keyframes fadeIn {
+  @keyframes onboardingReveal {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(24px);
     }
     to {
       opacity: 1;
@@ -286,20 +203,26 @@ import { siteConfig } from "../config";
     }
   }
 
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-    opacity: 0;
+  .onboarding-reveal {
+    animation: onboardingReveal 0.7s ease-out both;
   }
 
-  .animation-delay-200 {
-    animation-delay: 0.2s;
+  .onboarding-delay-1 {
+    animation-delay: 0.1s;
   }
-
-  .animation-delay-400 {
+  .onboarding-delay-2 {
+    animation-delay: 0.25s;
+  }
+  .onboarding-delay-3 {
     animation-delay: 0.4s;
   }
+  .onboarding-delay-4 {
+    animation-delay: 0.55s;
+  }
 
-  .animation-delay-600 {
-    animation-delay: 0.6s;
+  @media (prefers-reduced-motion: reduce) {
+    .onboarding-reveal {
+      animation: none;
+    }
   }
 </style>

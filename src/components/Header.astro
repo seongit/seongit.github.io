@@ -2,6 +2,7 @@
 import { siteConfig } from "../config";
 
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
+const hasBlog = siteConfig.blog?.rss;
 const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
 const hasEducation = siteConfig.education && siteConfig.education.length > 0;
 ---
@@ -15,7 +16,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
       <li>
         <a
           href="#about"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
+          class="text-ink/70 hover:text-accent transition-colors font-bold"
         >
           About
         </a>
@@ -24,10 +25,22 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
         hasProjects && (
           <li>
             <a
-              href="#projects"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
+              href="#problem-solving"
+              class="text-ink/70 hover:text-accent transition-colors font-bold"
             >
-              Projects
+              Problem Solving
+            </a>
+          </li>
+        )
+      }
+      {
+        hasBlog && (
+          <li>
+            <a
+              href="#articles"
+              class="text-ink/70 hover:text-accent transition-colors font-bold"
+            >
+              Blog
             </a>
           </li>
         )
@@ -37,7 +50,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <li>
             <a
               href="#experience"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
+              class="text-ink/70 hover:text-accent transition-colors font-bold"
             >
               Experience
             </a>
@@ -49,7 +62,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <li>
             <a
               href="#education"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
+              class="text-ink/70 hover:text-accent transition-colors font-bold"
             >
               Education
             </a>
@@ -64,9 +77,9 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
   window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
     if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
+      header?.classList.add("bg-page/80", "backdrop-blur-sm");
     } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
+      header?.classList.remove("bg-page/80", "backdrop-blur-sm");
     }
   });
 </script>

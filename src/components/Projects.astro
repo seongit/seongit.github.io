@@ -1,25 +1,25 @@
 ---
 import { siteConfig } from "../config";
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
+const projectBatchSize = 3;
 ---
 
 {
   hasProjects && (
-    <section id="projects" class="p-8 sm:p-12 md:p-16 lg:p-24">
-      <div>
+    <section
+      id="problem-solving"
+      class="scroll-mt-20 p-8 sm:p-12 md:p-16 lg:p-24"
+      data-problem-solving
+    >
+      <div class="problem-solving-reveal" data-problem-solving-reveal>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           <div class="lg:col-span-4">
-            <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
-              Projects
-            </h2>
-            <div
-              class="w-[75px] h-[5px] mt-2 rounded-full"
-              style={`background-color: ${siteConfig.accentColor}`}
-            />
+            <h2 class="type-section text-ink">Problem Solving</h2>
+            <div class="w-[75px] h-[5px] mt-3 rounded-full bg-accent" />
           </div>
 
           <div class="lg:col-span-8">
-            <div class="space-y-8">
+            <div class="space-y-8" data-projects-list>
               {siteConfig.projects.map((project, index) => {
                 const Component = project.link ? "a" : "div";
                 const linkProps = project.link
@@ -31,17 +31,20 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                   : {};
 
                 return (
-                  <div class="group relative">
+                  <div
+                    class={`group relative ${index >= projectBatchSize ? "hidden" : ""}`}
+                    data-project-card
+                  >
                     <Component
                       {...linkProps}
-                      class={`block relative p-4 sm:p-6 md:p-8 bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-200 transition-all duration-300 ${
+                      class={`block relative p-4 sm:p-6 md:p-8 bg-surface rounded-lg border border-ink/15 transition-all duration-300 ${
                         project.link
-                          ? "hover:bg-white hover:shadow-xl hover:border-gray-300 hover:-translate-y-1"
+                          ? "hover:shadow-xl hover:border-accent hover:-translate-y-1"
                           : ""
                       }`}
                     >
                       {project.link && (
-                        <div class="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-gray-900 rounded-full text-white transition-all duration-300 group-hover:bg-gray-700">
+                        <div class="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 flex items-center justify-center bg-accent rounded-full text-page transition-all duration-300 group-hover:opacity-90">
                           <svg
                             class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                             fill="none"
@@ -58,31 +61,47 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                         </div>
                       )}
 
-                      <div class="space-y-4">
+                      <div class="space-y-5">
                         <div>
-                          <span
-                            class="text-sm font-mono"
-                            style={{ color: siteConfig.accentColor }}
-                          >
-                            0{index + 1}
-                          </span>
-                          <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">
-                            {project.name}
-                          </h3>
+                          <div class="mt-1 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-2">
+                            <h3 class="text-xl sm:text-2xl font-bold text-ink">
+                              {project.name}
+                            </h3>
+                            <span class="type-role text-xs sm:text-sm text-ink/55">
+                              {project.company} · {project.year}
+                            </span>
+                          </div>
                         </div>
 
-                        <p
-                          class={`text-base sm:text-lg text-gray-600 leading-relaxed ${project.link ? "pr-12 sm:pr-14 md:pr-16" : ""}`}
+                        <dl
+                          class={`space-y-4 ${project.link ? "pr-12 sm:pr-14 md:pr-16" : ""}`}
                         >
-                          {project.description}
-                        </p>
+                          <div>
+                            <dt class="text-sm font-bold text-accent">문제</dt>
+                            <dd class="mt-1 text-base sm:text-lg text-ink/70">
+                              {project.problem}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt class="text-sm font-bold text-accent">접근</dt>
+                            <dd class="mt-1 text-base sm:text-lg text-ink/70">
+                              {project.approach}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt class="text-sm font-bold text-accent">결과</dt>
+                            <dd class="mt-1 text-base sm:text-lg text-ink/70">
+                              {project.result}
+                            </dd>
+                          </div>
+                        </dl>
 
                         {project.skills && project.skills.length > 0 && (
                           <div class="flex flex-wrap gap-1.5 sm:gap-2 pt-2">
                             {project.skills.map((skill) => (
                               <span
-                                class={`px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gray-900 text-white rounded-md sm:rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 ${
-                                  project.link ? "group-hover:bg-gray-800" : ""
+                                class={`px-2.5 sm:px-3 py-1 sm:py-1.5 border border-ink/40 text-ink rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 ${
+                                  project.link ? "group-hover:border-accent group-hover:text-accent" : ""
                                 }`}
                               >
                                 {skill}
@@ -96,9 +115,105 @@ const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
                 );
               })}
             </div>
+
+            {siteConfig.projects.length > projectBatchSize && (
+              <div class="mt-8 flex justify-center">
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 rounded-full border border-accent px-5 py-2.5 text-sm font-bold text-accent transition-colors hover:bg-accent hover:text-page focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-page"
+                  data-projects-show-more
+                >
+                  더 보기
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7l-7 -7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </section>
   )
 }
+
+<script is:inline>
+  const batchSize = 3;
+  const cards = Array.from(document.querySelectorAll("[data-project-card]"));
+  const showMoreButton = document.querySelector("[data-projects-show-more]");
+  let visibleCount = batchSize;
+
+  function renderProjectCards() {
+    cards.forEach((card, index) => {
+      card.classList.toggle("hidden", index >= visibleCount);
+    });
+
+    if (showMoreButton) {
+      showMoreButton.toggleAttribute("hidden", visibleCount >= cards.length);
+    }
+  }
+
+  showMoreButton?.addEventListener("click", () => {
+    visibleCount = Math.min(visibleCount + batchSize, cards.length);
+    renderProjectCards();
+  });
+
+  renderProjectCards();
+
+  const revealTarget = document.querySelector("[data-problem-solving-reveal]");
+  if (revealTarget) {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      revealTarget.classList.add("is-visible");
+    } else {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      observer.observe(revealTarget);
+    }
+  }
+</script>
+
+<style>
+  .problem-solving-reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out;
+  }
+
+  .problem-solving-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .problem-solving-reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "node tests/projects-show-more.test.mjs && node tests/rss.test.mjs",
     "astro": "astro"
   },
   "dependencies": {
