@@ -25,6 +25,14 @@ const projectBatchSize = 3;
             <div class="space-y-10" data-projects-list>
               {siteConfig.projects.map((project, index) => {
                 const Component = project.link ? "a" : "div";
+                const isFirstProject = index === 0;
+                const dividerClass = isFirstProject
+                  ? ""
+                  : "border-t border-accent/25 pt-6";
+                const linkClass = project.link
+                  ? `${isFirstProject ? "" : "hover:border-accent"} hover:pl-2`
+                  : "";
+                const iconTopClass = isFirstProject ? "top-0" : "top-6";
                 const linkProps = project.link
                   ? {
                       href: project.link,
@@ -40,14 +48,12 @@ const projectBatchSize = 3;
                   >
                     <Component
                       {...linkProps}
-                      class={`block relative border-t border-accent/25 pt-6 transition-all duration-300 ${
-                        project.link
-                          ? "hover:border-accent hover:pl-2"
-                          : ""
-                      }`}
+                      class={`block relative transition-all duration-300 ${dividerClass} ${linkClass}`}
                     >
                       {project.link && (
-                        <div class="absolute right-0 top-6 flex h-10 w-10 items-center justify-center bg-accent text-page transition-all duration-300 group-hover:opacity-90">
+                        <div
+                          class={`absolute right-0 ${iconTopClass} flex h-10 w-10 items-center justify-center bg-accent text-page transition-all duration-300 group-hover:opacity-90`}
+                        >
                           <svg
                             class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                             fill="none"

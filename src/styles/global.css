@@ -80,8 +80,20 @@ body {
 }
 
 .resume-section {
-  border-bottom: 1px solid var(--resume-color-line-subtle);
+  position: relative;
   padding: var(--resume-section-padding-y) var(--resume-section-padding-x);
+}
+
+.resume-section::after {
+  border-bottom: 1px solid var(--resume-color-line-subtle);
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 50%;
+  max-width: var(--resume-layout-max);
+  position: absolute;
+  transform: translateX(-50%);
+  width: calc(100% - (var(--resume-section-padding-x) * 2));
 }
 
 .resume-section-inner {
@@ -93,7 +105,7 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--resume-color-accent-section);
+  color: var(--resume-color-text-default);
   font-size: var(--resume-type-section-size);
   font-weight: 700;
   line-height: var(--resume-type-section-line);
