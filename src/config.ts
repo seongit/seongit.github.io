@@ -4,7 +4,7 @@ export const siteConfig = {
   description: "Portfolio website of SeongEun Kim",
   accentColor: "#C8644F",
   resumeHero: {
-    koreanName: "김성은",
+    koreanName: "",
     englishName: "SEONGEUN KIM",
     role: "Full Stack Engineer",
     greeting: "안녕하세요",
@@ -21,15 +21,15 @@ export const siteConfig = {
       },
       {
         label: "Blog",
-        text: "개발 블로그",
+        text: "Technical Blog",
         href: "https://seongeun-it.tistory.com/",
         icon: "book",
       },
       {
-        label: "GitHub",
-        text: "GitHub",
-        href: "https://github.com/seongit",
-        icon: "portfolio",
+        label: "LinkedIn",
+        text: "LinkedIn",
+        href: "https://www.linkedin.com/in/seongit",
+        icon: "linkedin",
       },
     ],
   },
@@ -52,9 +52,9 @@ export const siteConfig = {
   social: {
     email: "dev.seongeun@gmail.com",
     blog: "https://seongeun-it.tistory.com/",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/seongit",
     twitter: "",
-    github: "https://github.com/seongit",
+    github: "",
   },
   blog: {
     rss: "https://seongeun-it.tistory.com/rss",

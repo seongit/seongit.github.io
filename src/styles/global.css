@@ -24,8 +24,8 @@
 
   --resume-type-display-size: clamp(2.75rem, 8vw, 5.5rem);
   --resume-type-display-line: 1.08;
-  --resume-type-section-size: clamp(1.875rem, 5vw, 3.375rem);
-  --resume-type-section-line: 1.12;
+  --resume-type-section-size: clamp(1.625rem, 2vw, 1.7rem);
+  --resume-type-section-line: 1.18;
   --resume-type-body-line: 1.46;
 
   --resume-layout-max: 72rem;
@@ -40,6 +40,18 @@
   --color-bg: var(--resume-color-bg-page);
   --color-text: var(--resume-color-text-default);
   --accent-color: var(--resume-color-accent-section);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --resume-section-padding-x: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --resume-section-padding-x: 3rem;
+  }
 }
 
 body {
@@ -81,7 +93,7 @@ body {
 
 .resume-section {
   position: relative;
-  padding: var(--resume-section-padding-y) var(--resume-section-padding-x);
+  padding: var(--resume-section-padding-y) 0;
 }
 
 .resume-section::after {
@@ -96,9 +108,13 @@ body {
   width: calc(100% - (var(--resume-section-padding-x) * 2));
 }
 
+.resume-container,
 .resume-section-inner {
   margin: 0 auto;
   max-width: var(--resume-layout-max);
+  padding-left: var(--resume-section-padding-x);
+  padding-right: var(--resume-section-padding-x);
+  width: 100%;
 }
 
 .resume-heading {
@@ -118,4 +134,11 @@ body {
   flex: 0 0 auto;
   height: 1em;
   width: var(--resume-section-marker-width);
+}
+
+.resume-item-heading {
+  color: var(--resume-color-text-default);
+  font-size: var(--resume-type-section-size);
+  font-weight: 700;
+  line-height: var(--resume-type-section-line);
 }

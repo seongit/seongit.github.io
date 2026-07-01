@@ -57,7 +57,12 @@ When modifying components:
 Preserve these visual rules when editing resume sections:
 
 - Section divider lines should be drawn by `.resume-section::after`, centered within the main content width, not across the full viewport.
+- Use `.resume-container` and `.resume-section-inner` as the shared width system for hero and resume sections. Avoid ad hoc `max-w-*` and horizontal padding combinations for top-level section containers.
+- The hero accent background spans the full viewport, but its inner text, divider, and contact grid should be constrained by `.resume-container` and align with the intro/about content width.
+- Keep visible section labels in English: `About`, `Solutions`, `Articles`, `Experience`, and `Education` when education is shown.
 - Section headings use the default text color for the title text. Only the leading vertical marker (`.resume-heading::before`) uses the accent color.
+- Resume item headings such as project names, company names, and about subtitles should use `.resume-item-heading` so they stay visually aligned with `.resume-heading`.
+- Before completing UI layout changes, verify in the in-app browser that section headings and body text do not overlap or intrude into neighboring content at desktop and mobile widths.
 - The first item in `Projects.astro` and `Experience.astro` should not render a top divider line or its associated top padding.
 - Subsequent project and experience items should keep the subtle accent top divider (`border-t border-accent/25`) and spacing (`pt-6`).
 - When updating design tokens in `src/styles/global.css`, preserve the existing `--resume-*` CSS custom properties and wire new section styling through them where possible.

@@ -26,7 +26,7 @@ for (const project of siteConfig.projects) {
 
 assert.match(componentSource, /data-project-card/, "Projects component should mark revealable cards");
 assert.match(componentSource, /data-projects-show-more/, "Projects component should include a show-more control");
-assert.match(componentSource, /Problem Solving/, "Projects section should be framed as problem solving");
+assert.match(componentSource, /Solutions/, "Projects section should be framed as solutions");
 assert.match(componentSource, /project\.company/, "Project cards should render company metadata");
 assert.match(componentSource, /project\.year/, "Project cards should render year metadata");
 assert.doesNotMatch(componentSource, /0\{index \+ 1\}/, "Project cards should not render numeric prefixes");
