@@ -16,15 +16,10 @@ const iconPaths = {
     "M21 6v13",
   ],
   portfolio: [
-    "M10 6h4",
-    "M10 12h4",
-    "M10 18h4",
-    "M5 6h.01",
-    "M5 12h.01",
-    "M5 18h.01",
-    "M19 6h.01",
-    "M19 12h.01",
-    "M19 18h.01",
+    "M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2H4a2 2 0 0 1 -2 -2V8a2 2 0 0 1 2 -2z",
+    "M12 12h.01",
+    "M16 6V4a2 2 0 0 0-2 -2h-4a2 2 0 0 0-2 2v2",
+    "M22 13a18.15 18.15 0 0 1 -20 0",
   ],
 };
 ---
@@ -92,20 +87,9 @@ const iconPaths = {
   </div>
 
   <div
-    class="mx-auto flex max-w-6xl flex-col gap-8 border-b border-accent/25 px-6 py-10 sm:px-10 md:flex-row md:items-center lg:px-12 lg:py-12"
+    class="mx-auto max-w-6xl border-b border-accent/25 px-6 py-10 sm:px-10 lg:px-12 lg:py-12"
   >
-    <div class="relative mx-auto h-40 w-40 shrink-0 md:mx-0 md:h-48 md:w-48">
-      <div class="absolute inset-0 rounded-full border border-accent/35"></div>
-      <img
-        src={resumeHero.profileImage}
-        alt={resumeHero.profileAlt}
-        class="absolute inset-2 h-[calc(100%-1rem)] w-[calc(100%-1rem)] rounded-full object-cover"
-        width="584"
-        height="584"
-      />
-    </div>
-
-    <div class="flex-1 text-ink">
+    <div class="text-ink">
       <p class="text-sm font-bold text-accent sm:text-base">
         {resumeHero.role}
       </p>
@@ -114,7 +98,7 @@ const iconPaths = {
         class="mt-3 text-balance text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl"
       >
         <span class="block">{resumeHero.greeting}</span>
-        <span class="block"><span data-rotator-word data-rotator-words={JSON.stringify(resumeHero.rotatorWords)} class="rotator-word inline-block text-accent" aria-live="polite">{resumeHero.rotatorWords[0]}</span><span data-rotator-particle>{resumeHero.particle}</span> {resumeHero.assetSuffix}</span>
+        <span class="block"><span data-rotator-unit data-rotator-words={JSON.stringify(resumeHero.rotatorWords)} class="rotator-unit inline-block text-accent" aria-live="polite"><span data-rotator-word>{resumeHero.rotatorWords[0]}</span><span data-rotator-particle>{resumeHero.particle}</span></span> {resumeHero.assetSuffix}</span>
         <span class="block">{resumeHero.closing}</span>
       </h2>
 
@@ -138,13 +122,14 @@ const iconPaths = {
 </section>
 
 <script is:inline>
-  const rotator = document.querySelector("[data-rotator-word]");
+  const rotator = document.querySelector("[data-rotator-unit]");
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
   if (rotator && !prefersReducedMotion) {
-    const particle = document.querySelector("[data-rotator-particle]");
+    const word = rotator.querySelector("[data-rotator-word]");
+    const particle = rotator.querySelector("[data-rotator-particle]");
     const words = JSON.parse(rotator.dataset.rotatorWords || "[]");
     let activeIndex = 0;
     const hasBatchim = (word) => {
@@ -159,7 +144,7 @@ const iconPaths = {
 
       window.setTimeout(() => {
         const nextWord = words[activeIndex];
-        rotator.textContent = nextWord;
+        word.textContent = nextWord;
         if (particle) {
           particle.textContent = hasBatchim(nextWord) ? "을" : "를";
         }
@@ -170,7 +155,7 @@ const iconPaths = {
 </script>
 
 <style>
-  .rotator-word {
+  .rotator-unit {
     transform: translateY(0);
     opacity: 1;
     transition:
@@ -178,13 +163,13 @@ const iconPaths = {
       transform 180ms ease;
   }
 
-  .rotator-word.is-changing {
+  .rotator-unit.is-changing {
     transform: translateY(0.25rem);
     opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .rotator-word {
+    .rotator-unit {
       transition: none;
     }
   }

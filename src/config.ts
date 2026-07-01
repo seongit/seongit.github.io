@@ -12,8 +12,6 @@ export const siteConfig = {
     particle: "을",
     assetSuffix: "자산으로 만드는",
     closing: "풀스택 개발자 김성은입니다.",
-    profileImage: "/profile-seongeun.png",
-    profileAlt: "김성은 프로필 사진",
     contacts: [
       {
         label: "Email",
