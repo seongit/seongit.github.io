@@ -52,6 +52,16 @@ When modifying components:
 3. Maintain the existing monospace font aesthetic
 4. Use Tabler Icons for consistency with existing icons
 
+## Resume UI Guidelines
+
+Preserve these visual rules when editing resume sections:
+
+- Section divider lines should be drawn by `.resume-section::after`, centered within the main content width, not across the full viewport.
+- Section headings use the default text color for the title text. Only the leading vertical marker (`.resume-heading::before`) uses the accent color.
+- The first item in `Projects.astro` and `Experience.astro` should not render a top divider line or its associated top padding.
+- Subsequent project and experience items should keep the subtle accent top divider (`border-t border-accent/25`) and spacing (`pt-6`).
+- When updating design tokens in `src/styles/global.css`, preserve the existing `--resume-*` CSS custom properties and wire new section styling through them where possible.
+
 ## Configuration Structure
 
 The `src/config.ts` exports a `siteConfig` object with these sections:
