@@ -2,6 +2,14 @@
 import { siteConfig } from "../config";
 
 const { resumeHero, aboutMe } = siteConfig;
+const nameKeyword = "김성은";
+const nameIndex = resumeHero.closing.indexOf(nameKeyword);
+const closingBeforeName =
+  nameIndex >= 0 ? resumeHero.closing.slice(0, nameIndex) : resumeHero.closing;
+const closingAfterName =
+  nameIndex >= 0
+    ? resumeHero.closing.slice(nameIndex + nameKeyword.length)
+    : "";
 
 const iconPaths = {
   mail: [
@@ -68,7 +76,7 @@ const iconPaths = {
             <a
               href={contact.href}
               aria-label={contact.label}
-              class="flex flex-col items-center gap-2 px-4 py-1 transition-colors hover:text-page"
+              class="hero-contact-link flex flex-col items-center gap-2 px-4 py-1 transition-colors hover:text-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
               {...(contact.href.startsWith("http")
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
@@ -81,7 +89,7 @@ const iconPaths = {
                 stroke-width="1.8"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="h-5 w-5"
+                class="hero-contact-icon h-5 w-5"
                 aria-hidden="true"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -108,13 +116,16 @@ const iconPaths = {
       >
         <span class="block">{resumeHero.greeting}</span>
         <span class="block"><span data-rotator-unit data-rotator-words={JSON.stringify(resumeHero.rotatorWords)} class="rotator-unit inline-block text-accent" aria-live="polite"><span data-rotator-word>{resumeHero.rotatorWords[0]}</span><span data-rotator-particle>{resumeHero.particle}</span></span> {resumeHero.assetSuffix}</span>
-        <span class="block">{resumeHero.closing}</span>
+        <span class="block">{closingBeforeName}<span data-name-underline class="name-underline">{nameIndex >= 0 ? nameKeyword : ""}</span>{closingAfterName}</span>
       </h2>
 
-      <div class="mt-6 space-y-3 text-sm leading-7 text-ink/80 sm:text-base">
+      <div
+        class="mt-6 space-y-3 text-sm leading-7 text-ink/80 sm:text-base"
+        data-hero-evidence
+      >
         {
           aboutMe.slice(1).map((paragraph) => (
-            <p>
+            <p class="hero-evidence">
               {paragraph.map((segment) =>
                 segment.bold ? (
                   <strong class="font-bold text-ink">{segment.text}</strong>
@@ -164,6 +175,24 @@ const iconPaths = {
 </script>
 
 <style>
+  .hero-contact-link,
+  .hero-contact-icon {
+    transition:
+      color 180ms ease,
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  .hero-contact-link:hover,
+  .hero-contact-link:focus-visible {
+    transform: translateY(-0.125rem);
+  }
+
+  .hero-contact-link:hover .hero-contact-icon,
+  .hero-contact-link:focus-visible .hero-contact-icon {
+    transform: translateY(-0.125rem);
+  }
+
   .rotator-unit {
     transform: translateY(0);
     opacity: 1;
@@ -177,9 +206,58 @@ const iconPaths = {
     opacity: 0;
   }
 
+  .name-underline {
+    text-decoration-line: underline;
+    text-decoration-color: rgb(200 100 79 / 0.45);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.12em;
+  }
+
+  .hero-evidence {
+    animation: hero-evidence-in 480ms ease-out both;
+  }
+
+  .hero-evidence:nth-child(2) {
+    animation-delay: 110ms;
+  }
+
+  .hero-evidence:nth-child(3) {
+    animation-delay: 220ms;
+  }
+
+  @keyframes hero-evidence-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .hero-contact-link,
+    .hero-contact-icon,
     .rotator-unit {
       transition: none;
+    }
+
+    .hero-contact-link:hover,
+    .hero-contact-link:focus-visible,
+    .hero-contact-link:hover .hero-contact-icon,
+    .hero-contact-link:focus-visible .hero-contact-icon {
+      transform: none;
+    }
+
+    .hero-evidence {
+      animation: none;
+    }
+
+    .hero-evidence {
+      opacity: 1;
+      transform: none;
     }
   }
 </style>

@@ -26,8 +26,12 @@ assert.equal(
 );
 
 assert.match(heroSource, /data-rotator-word/);
-assert.doesNotMatch(heroSource, /data-rotator-line/);
+assert.doesNotMatch(heroSource, /data-rotator-progress/);
 assert.match(heroSource, /resumeHero\.greeting/);
 assert.match(heroSource, /data-rotator-particle/);
 assert.match(heroSource, /resumeHero\.assetSuffix/);
-assert.match(heroSource, /resumeHero\.closing/);
+assert.doesNotMatch(heroSource, /data-asset-underline/);
+assert.match(heroSource, /closingAfterName/);
+assert.match(heroSource, /data-name-underline/);
+assert.match(heroSource, /data-hero-evidence/);
+assert.match(heroSource, /hero-contact-link/);
