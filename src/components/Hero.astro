@@ -2,14 +2,6 @@
 import { siteConfig } from "../config";
 
 const { resumeHero, aboutMe } = siteConfig;
-const nameKeyword = "김성은";
-const nameIndex = resumeHero.closing.indexOf(nameKeyword);
-const closingBeforeName =
-  nameIndex >= 0 ? resumeHero.closing.slice(0, nameIndex) : resumeHero.closing;
-const closingAfterName =
-  nameIndex >= 0
-    ? resumeHero.closing.slice(nameIndex + nameKeyword.length)
-    : "";
 
 const iconPaths = {
   mail: [
@@ -116,7 +108,7 @@ const iconPaths = {
       >
         <span class="block">{resumeHero.greeting}</span>
         <span class="block"><span data-rotator-unit data-rotator-words={JSON.stringify(resumeHero.rotatorWords)} class="rotator-unit inline-block text-accent" aria-live="polite"><span data-rotator-word>{resumeHero.rotatorWords[0]}</span><span data-rotator-particle>{resumeHero.particle}</span></span> {resumeHero.assetSuffix}</span>
-        <span class="block">{closingBeforeName}<span data-name-underline class="name-underline">{nameIndex >= 0 ? nameKeyword : ""}</span>{closingAfterName}</span>
+        <span class="block">{resumeHero.closing}</span>
       </h2>
 
       <div
@@ -204,13 +196,6 @@ const iconPaths = {
   .rotator-unit.is-changing {
     transform: translateY(0.25rem);
     opacity: 0;
-  }
-
-  .name-underline {
-    text-decoration-line: underline;
-    text-decoration-color: rgb(200 100 79 / 0.45);
-    text-decoration-thickness: 0.08em;
-    text-underline-offset: 0.12em;
   }
 
   .hero-evidence {
