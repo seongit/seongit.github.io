@@ -3,6 +3,12 @@ import DetailCodeBlock from "./DetailCodeBlock.astro";
 import { siteConfig } from "../config";
 const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
 const projectBatchSize = 3;
+const projectSkillSet = new Set(
+  siteConfig.projects.flatMap((project) => project.skills || []),
+);
+const projectFilters = siteConfig.skills.filter((skill) =>
+  projectSkillSet.has(skill),
+);
 ---
 
 {
@@ -23,6 +29,21 @@ const projectBatchSize = 3;
           </div>
 
           <div class="lg:col-span-9">
+            {projectFilters.length > 0 && (
+              <div class="mb-8 flex flex-wrap gap-3" data-tech-filters>
+                {projectFilters.map((skill) => (
+                  <button
+                    type="button"
+                    class="rounded-full border border-ink/50 px-4 py-2 text-sm font-bold text-ink transition-colors duration-200 hover:border-accent hover:text-accent aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-page sm:px-5 sm:py-2.5 sm:text-base"
+                    data-tech-filter={skill}
+                    aria-pressed="false"
+                  >
+                    {skill}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <div class="space-y-10" data-projects-list>
               {siteConfig.projects.map((project, index) => {
                 const Component = project.link ? "a" : "div";
@@ -315,6 +336,7 @@ const projectBatchSize = 3;
 <script is:inline>
   const batchSize = 3;
   const cards = Array.from(document.querySelectorAll("[data-project-card]"));
+  const filters = Array.from(document.querySelectorAll("[data-tech-filter]"));
   const showMoreButton = document.querySelector("[data-projects-show-more]");
   const emptyState = document.querySelector("[data-projects-empty]");
   let visibleCount = batchSize;
@@ -343,14 +365,25 @@ const projectBatchSize = 3;
     }
   }
 
-  showMoreButton?.addEventListener("click", () => {
-    visibleCount = Math.min(visibleCount + batchSize, cards.length);
-    renderProjectCards();
+  filters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      const nextSkill = filter.dataset.techFilter || "";
+      activeProjectSkill = activeProjectSkill === nextSkill ? "" : nextSkill;
+      visibleCount = batchSize;
+
+      filters.forEach((item) => {
+        item.setAttribute(
+          "aria-pressed",
+          String(item.dataset.techFilter === activeProjectSkill),
+        );
+      });
+
+      renderProjectCards();
+    });
   });
 
-  document.addEventListener("tech-filter-change", (event) => {
-    activeProjectSkill = event.detail?.skill || "";
-    visibleCount = batchSize;
+  showMoreButton?.addEventListener("click", () => {
+    visibleCount = Math.min(visibleCount + batchSize, cards.length);
     renderProjectCards();
   });
 

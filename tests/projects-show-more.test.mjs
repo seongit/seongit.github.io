@@ -16,6 +16,14 @@ const aboutSource = readFileSync(
   new URL("../src/components/About.astro", import.meta.url),
   "utf8",
 );
+const indexSource = readFileSync(
+  new URL("../src/pages/index.astro", import.meta.url),
+  "utf8",
+);
+const headerSource = readFileSync(
+  new URL("../src/components/Header.astro", import.meta.url),
+  "utf8",
+);
 const globalCssSource = readFileSync(
   new URL("../src/styles/global.css", import.meta.url),
   "utf8",
@@ -35,13 +43,16 @@ for (const project of siteConfig.projects) {
 assert.match(componentSource, /data-project-card/, "Projects component should mark revealable cards");
 assert.match(componentSource, /data-project-skills/, "Project cards should expose skills for filtering");
 assert.match(componentSource, /data-projects-show-more/, "Projects component should include a show-more control");
-assert.match(componentSource, /tech-filter-change/, "Projects component should listen for tech stack filters");
+assert.match(componentSource, /data-tech-filter/, "Solutions should include skill filter chips");
+assert.match(componentSource, /siteConfig\.skills\.filter/, "Solutions filters should derive from the configured skill list");
+assert.match(componentSource, /projectSkillSet\.has/, "Solutions filters should hide skills with no project data");
+assert.doesNotMatch(componentSource, /tech-filter-change/, "Solutions filters should not depend on a separate tech stack section");
 assert.match(componentSource, /Solutions/, "Projects section should be framed as solutions");
 assert.match(componentSource, /project\.company/, "Project cards should render company metadata");
 assert.match(componentSource, /project\.year/, "Project cards should render year metadata");
 assert.doesNotMatch(componentSource, /0\{index \+ 1\}/, "Project cards should not render numeric prefixes");
-assert.match(aboutSource, /Tech Stack/, "Former about section should render as tech stack");
-assert.match(aboutSource, /data-tech-filter/, "Tech stack chips should be clickable filters");
+assert.doesNotMatch(indexSource, /<About \/>/, "Standalone tech stack section should be removed from the page flow");
+assert.doesNotMatch(headerSource, /#tech-stack/, "Header should not link to a removed tech stack section");
 assert.doesNotMatch(aboutSource, /소개/, "Intro copy section should be removed");
 
 assert.match(componentSource, /data-detail-trigger/, "Project cards with detail should be clickable triggers");
