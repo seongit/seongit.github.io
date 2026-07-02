@@ -89,17 +89,20 @@ export const siteConfig = {
   ],
   skills: [
     "Java",
-    "JavaScript",
-    "TypeScript",
     "Spring Boot",
     "Spring",
     "SQL",
     "JPA",
+    "JUnit",
+    "JavaScript",
+    "TypeScript",
     "Jenkins",
     "SonarQube",
     "Docker",
     "Kubernetes",
-    "JUnit",
+    "Claude Code",
+    "Codex",
+    "Cursor",
   ],
   projects: [
     {
@@ -114,6 +117,136 @@ export const siteConfig = {
         "정적 분석 시간을 14분에서 1분으로 약 93% 단축하고, 품질 검증 피드백 속도를 개선했습니다.",
       link: "",
       skills: ["SonarQube", "Jenkins", "NFS", "Static Analysis"],
+      detail: {
+        metrics: [
+          {
+            label: "정적 분석 시간",
+            before: "14분",
+            after: "1분",
+            delta: "약 93% 단축",
+          },
+          {
+            label: "환경 간 성능 차이",
+            before: "14배",
+            after: "제거",
+            delta: "동일 조건 편차 해소",
+          },
+        ],
+        steps: [
+          {
+            title: "문제 상황 정의",
+            blocks: [
+              {
+                type: "text",
+                value:
+                  "동일한 소스코드와 동일한 분석 조건인데도 실행 환경에 따라 정적 분석 시간이 14배 차이 났습니다. A 개발 환경은 약 1분, B 개발 환경은 약 14분이 걸렸습니다.",
+              },
+              {
+                type: "text",
+                value:
+                  "절대적인 14분 자체보다, 같은 코드가 환경에 따라 14배 느려진다는 점이 핵심 문제였습니다.",
+              },
+            ],
+          },
+          {
+            title: "1차 가설 — 서버 리소스(메모리) 차이",
+            blocks: [
+              {
+                type: "text",
+                value:
+                  "가장 먼저 서버 스펙을 비교했습니다. CPU는 동일했지만 메모리에 차이가 있었습니다.",
+              },
+              {
+                type: "code",
+                lang: "text",
+                value:
+                  "환경         CPU       Memory\nA 개발 서버   8 Core    16GB\nB 개발 서버   8 Core    8GB",
+                caption: "A/B 환경 서버 스펙 비교",
+              },
+              {
+                type: "text",
+                value:
+                  "SonarQube는 내부적으로 Elasticsearch를 사용하고 Elasticsearch는 메모리 영향을 크게 받으므로, B 환경을 16GB 워커 노드로 변경했습니다. 하지만 결과는 그대로였습니다.",
+              },
+            ],
+          },
+          {
+            title: "2차 확인 — Pod 리소스와 마운트 구조",
+            blocks: [
+              {
+                type: "text",
+                value:
+                  "메모리를 늘려도 개선되지 않아, Pod 내부 리소스와 주요 디렉터리의 마운트 위치를 다시 확인했습니다. 가장 큰 차이는 스토리지 구성이었습니다.",
+              },
+              {
+                type: "code",
+                lang: "text",
+                value:
+                  "환경         스토리지 구성\nA 개발 서버   로컬 디스크 기반 스토리지\nB 개발 서버   NFS 스토리지",
+                caption: "A/B 환경 스토리지 구성 차이",
+              },
+              {
+                type: "text",
+                value:
+                  "Elasticsearch는 인덱싱·검색 과정에서 디스크 I/O를 많이 사용하고, SonarQube의 data 디렉터리는 Elasticsearch 인덱스가 저장되는 영역이라 읽기/쓰기 성능의 영향을 크게 받습니다.",
+              },
+            ],
+          },
+          {
+            title: "원인 규명 — NFS 스토리지 I/O 병목",
+            blocks: [
+              {
+                type: "text",
+                value:
+                  "SonarQube 공식 문서도 성능·안정성 측면에서 NFS, SMB/CIFS, NAS 같은 remote-mounted storage 사용을 권장하지 않습니다. 즉, B 환경에서 주요 디렉터리를 NFS에 올려둔 것이 성능 저하의 핵심 원인이었습니다.",
+              },
+              {
+                type: "code",
+                lang: "bash",
+                value:
+                  "# Pod 내부 마운트 확인\nkubectl exec -it <sonarqube-pod> -n <namespace> -- df -h\nkubectl exec -it <sonarqube-pod> -n <namespace> -- mount\n\n# PVC / StorageClass 확인\nkubectl get pvc -n <namespace>\nkubectl describe pvc <pvc-name> -n <namespace>\nkubectl get storageclass",
+                caption: "마운트·스토리지 구성 진단 명령",
+              },
+            ],
+          },
+          {
+            title: "해결 — 주요 디렉터리를 로컬 디스크로 전환",
+            blocks: [
+              {
+                type: "text",
+                value:
+                  "B 환경의 스토리지 구성을 A 환경과 동일하게, SonarQube 주요 디렉터리를 NFS가 아닌 로컬 디스크 기반 스토리지에 마운트하도록 변경했습니다.",
+              },
+              {
+                type: "code",
+                lang: "text",
+                value:
+                  "/opt/sonarqube/data\n/opt/sonarqube/extensions\n/opt/sonarqube/logs\n# 필요 시 임시 디렉터리 영역",
+                caption: "로컬 디스크로 전환한 주요 디렉터리",
+              },
+            ],
+          },
+          {
+            title: "결과 및 팀 공유",
+            blocks: [
+              {
+                type: "text",
+                value:
+                  "스토리지 구성을 변경한 뒤 동일한 소스코드로 다시 분석하자 14분에서 1분으로, 약 93% 단축됐습니다.",
+              },
+              {
+                type: "text",
+                value:
+                  "CPU·메모리뿐 아니라 디스크 성능과 마운트 구조까지 확인해야 한다는 점을 정리해, 같은 이슈가 반복되지 않도록 팀에 공유했습니다.",
+              },
+            ],
+          },
+        ],
+        blogLink: {
+          label: "블로그에서 자세히 보기",
+          href: "https://seongeun-it.tistory.com/338",
+        },
+      },
     },
     {
       name: "Webhook HMAC 검증 적용기",

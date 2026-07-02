@@ -25,14 +25,13 @@ const projectBatchSize = 3;
             <div class="space-y-10" data-projects-list>
               {siteConfig.projects.map((project, index) => {
                 const Component = project.link ? "a" : "div";
-                const isFirstProject = index === 0;
-                const dividerClass = isFirstProject
-                  ? ""
-                  : "border-t border-accent/25 pt-6";
-                const linkClass = project.link
-                  ? `${isFirstProject ? "" : "hover:border-accent"} hover:pl-2`
+                const hasDetail = Boolean(project.detail);
+                const isInteractive = Boolean(project.link) || hasDetail;
+                const panelClass =
+                  "border border-accent/25 bg-surface p-6 sm:p-8";
+                const interactiveClass = isInteractive
+                  ? "hover:-translate-y-1 hover:border-accent"
                   : "";
-                const iconTopClass = isFirstProject ? "top-0" : "top-6";
                 const linkProps = project.link
                   ? {
                       href: project.link,
@@ -43,16 +42,26 @@ const projectBatchSize = 3;
 
                 return (
                   <div
-                    class={`group relative ${index >= projectBatchSize ? "hidden" : ""}`}
+                    class={`group relative ${index >= projectBatchSize ? "hidden" : ""} ${hasDetail ? "cursor-pointer" : ""}`}
                     data-project-card
+                    data-project-skills={JSON.stringify(project.skills || [])}
+                    {...(hasDetail
+                      ? {
+                          "data-detail-trigger": String(index),
+                          "data-detail-title": project.name,
+                          role: "button",
+                          tabindex: "0",
+                          "aria-haspopup": "dialog",
+                        }
+                      : {})}
                   >
                     <Component
                       {...linkProps}
-                      class={`block relative transition-all duration-300 ${dividerClass} ${linkClass}`}
+                      class={`block relative transition-all duration-300 ${panelClass} ${interactiveClass}`}
                     >
                       {project.link && (
                         <div
-                          class={`absolute right-0 ${iconTopClass} flex h-10 w-10 items-center justify-center bg-accent text-page transition-all duration-300 group-hover:opacity-90`}
+                          class="absolute right-6 top-6 flex h-10 w-10 items-center justify-center bg-accent text-page transition-all duration-300 group-hover:opacity-90"
                         >
                           <svg
                             class="w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -118,6 +127,25 @@ const projectBatchSize = 3;
                             ))}
                           </div>
                         )}
+
+                        {hasDetail && (
+                          <span class="detail-cue mt-1 inline-flex items-center gap-1.5 text-sm font-bold text-accent transition-transform duration-300 group-hover:translate-x-0.5">
+                            자세히 보기
+                            <svg
+                              class="h-4 w-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5l7 7l-7 7"
+                              />
+                            </svg>
+                          </span>
+                        )}
                       </div>
                     </Component>
                   </div>
@@ -149,7 +177,137 @@ const projectBatchSize = 3;
                 </button>
               </div>
             )}
+
+            <p
+              class="mt-8 hidden text-center text-sm font-bold text-ink/60"
+              data-projects-empty
+            >
+              선택한 기술 스택과 연결된 주요 성과가 없습니다.
+            </p>
           </div>
+        </div>
+      </div>
+
+      {siteConfig.projects.map((project, index) =>
+        project.detail ? (
+          <template data-detail-template={String(index)}>
+            {project.detail.metrics && project.detail.metrics.length > 0 && (
+              <div class="detail-metrics">
+                {project.detail.metrics.map((metric) => (
+                  <div class="detail-metric">
+                    <p class="detail-metric-label">{metric.label}</p>
+                    <p class="detail-metric-value">
+                      <span class="detail-metric-before">{metric.before}</span>
+                      <span class="detail-metric-arrow" aria-hidden="true">
+                        →
+                      </span>
+                      <span class="detail-metric-after">{metric.after}</span>
+                    </p>
+                    {metric.delta && (
+                      <p class="detail-metric-delta">{metric.delta}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <ol class="detail-timeline">
+              {project.detail.steps.map((step, stepIndex) => (
+                <li class="detail-step">
+                  <span class="detail-step-marker" aria-hidden="true">
+                    {String(stepIndex + 1).padStart(2, "0")}
+                  </span>
+                  <div class="detail-step-body">
+                    <h4 class="detail-step-title">{step.title}</h4>
+                    {step.blocks.map((block) =>
+                      block.type === "code" ? (
+                        <figure class="detail-code">
+                          <pre>
+                            <code>{block.value}</code>
+                          </pre>
+                          {block.caption && (
+                            <figcaption>{block.caption}</figcaption>
+                          )}
+                        </figure>
+                      ) : block.type === "image" ? (
+                        <figure class="detail-image">
+                          <img
+                            src={block.value}
+                            alt={block.caption || ""}
+                            loading="lazy"
+                          />
+                          {block.caption && (
+                            <figcaption>{block.caption}</figcaption>
+                          )}
+                        </figure>
+                      ) : (
+                        <p class="detail-text">{block.value}</p>
+                      ),
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {project.detail.blogLink && (
+              <a
+                href={project.detail.blogLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="detail-blog-link"
+              >
+                {project.detail.blogLink.label}
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 17L17 7M17 7H7M17 7V17"
+                  />
+                </svg>
+              </a>
+            )}
+          </template>
+        ) : null,
+      )}
+
+      <div class="detail-modal hidden" data-detail-modal aria-hidden="true">
+        <div class="detail-modal-overlay" data-detail-overlay />
+        <div
+          class="detail-modal-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="detail-modal-title"
+        >
+          <div class="detail-modal-header">
+            <h3 class="detail-modal-title" id="detail-modal-title" />
+            <button
+              type="button"
+              class="detail-modal-close"
+              data-detail-close
+              aria-label="닫기"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="detail-modal-body" data-detail-body />
         </div>
       </div>
     </section>
@@ -160,20 +318,41 @@ const projectBatchSize = 3;
   const batchSize = 3;
   const cards = Array.from(document.querySelectorAll("[data-project-card]"));
   const showMoreButton = document.querySelector("[data-projects-show-more]");
+  const emptyState = document.querySelector("[data-projects-empty]");
   let visibleCount = batchSize;
+  let activeProjectSkill = "";
 
   function renderProjectCards() {
-    cards.forEach((card, index) => {
-      card.classList.toggle("hidden", index >= visibleCount);
+    const matchingCards = cards.filter((card) => {
+      const skills = JSON.parse(card.dataset.projectSkills || "[]");
+      return !activeProjectSkill || skills.includes(activeProjectSkill);
+    });
+
+    cards.forEach((card) => {
+      const index = matchingCards.indexOf(card);
+      card.classList.toggle("hidden", index === -1 || index >= visibleCount);
     });
 
     if (showMoreButton) {
-      showMoreButton.toggleAttribute("hidden", visibleCount >= cards.length);
+      showMoreButton.toggleAttribute(
+        "hidden",
+        visibleCount >= matchingCards.length,
+      );
+    }
+
+    if (emptyState) {
+      emptyState.classList.toggle("hidden", matchingCards.length > 0);
     }
   }
 
   showMoreButton?.addEventListener("click", () => {
     visibleCount = Math.min(visibleCount + batchSize, cards.length);
+    renderProjectCards();
+  });
+
+  document.addEventListener("tech-filter-change", (event) => {
+    activeProjectSkill = event.detail?.skill || "";
+    visibleCount = batchSize;
     renderProjectCards();
   });
 
@@ -202,6 +381,58 @@ const projectBatchSize = 3;
       observer.observe(revealTarget);
     }
   }
+
+  const detailModal = document.querySelector("[data-detail-modal]");
+  const detailBody = detailModal?.querySelector("[data-detail-body]");
+  const detailTitle = detailModal?.querySelector("#detail-modal-title");
+  const detailClose = detailModal?.querySelector("[data-detail-close]");
+  let detailLastFocused = null;
+
+  function openDetail(index, title) {
+    const template = document.querySelector(
+      `[data-detail-template="${index}"]`,
+    );
+    if (!template || !detailModal || !detailBody) return;
+
+    detailBody.innerHTML = template.innerHTML;
+    if (detailTitle) detailTitle.textContent = title || "";
+    detailBody.scrollTop = 0;
+    detailLastFocused =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    detailModal.classList.remove("hidden");
+    detailModal.setAttribute("aria-hidden", "false");
+    detailClose?.focus();
+  }
+
+  function closeDetail() {
+    if (!detailModal || detailModal.classList.contains("hidden")) return;
+    detailModal.classList.add("hidden");
+    detailModal.setAttribute("aria-hidden", "true");
+    if (detailBody) detailBody.innerHTML = "";
+    detailLastFocused?.focus();
+    detailLastFocused = null;
+  }
+
+  document.querySelectorAll("[data-detail-trigger]").forEach((trigger) => {
+    const handleOpen = () =>
+      openDetail(trigger.dataset.detailTrigger, trigger.dataset.detailTitle);
+
+    trigger.addEventListener("click", handleOpen);
+    trigger.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        handleOpen();
+      }
+    });
+  });
+
+  detailClose?.addEventListener("click", closeDetail);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDetail();
+  });
 </script>
 
 <style>

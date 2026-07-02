@@ -2,45 +2,58 @@
 import { siteConfig } from "../config";
 ---
 
-<section id="about" class="resume-section scroll-mt-20">
+<section id="tech-stack" class="resume-section scroll-mt-20">
   <div class="resume-section-inner">
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-16">
       <div class="lg:col-span-3">
-        <h2 class="resume-heading">About</h2>
+        <h2 class="resume-heading">Tech Stack</h2>
       </div>
 
-      <div class="space-y-8 lg:col-span-9">
-        <div class="space-y-5 text-base leading-8 text-ink/80 sm:text-lg">
-          <h3 class="resume-item-heading">
-            {siteConfig.aboutTitle}
-          </h3>
+      <div class="lg:col-span-9">
+        <div class="flex flex-wrap gap-3" data-tech-filters>
           {
-            siteConfig.aboutMe.map((paragraph) => (
-              <p>
-                {paragraph.map((segment) =>
-                  segment.bold ? (
-                    <strong class="font-bold text-ink">{segment.text}</strong>
-                  ) : (
-                    segment.text
-                  ),
-                )}
-              </p>
+            siteConfig.skills.map((skill) => (
+              <button
+                type="button"
+                class="rounded-full border border-ink/50 px-4 py-2 text-sm font-bold text-ink transition-colors duration-200 hover:border-accent hover:text-accent aria-pressed:border-accent aria-pressed:bg-accent aria-pressed:text-page sm:px-5 sm:py-2.5 sm:text-base"
+                data-tech-filter={skill}
+                aria-pressed="false"
+              >
+                {skill}
+              </button>
             ))
           }
-        </div>
-
-        <div class="pt-4">
-          <div class="flex flex-wrap gap-3">
-            {
-              siteConfig.skills.map((skill) => (
-                <span class="border border-accent/35 px-3 py-1.5 text-sm font-bold text-ink transition-colors duration-200 hover:border-accent hover:text-accent sm:px-4 sm:py-2 sm:text-base">
-                  {skill}
-                </span>
-              ))
-            }
-          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script is:inline>
+  const filters = Array.from(document.querySelectorAll("[data-tech-filter]"));
+  let activeTechFilter = "";
+
+  filters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      const nextSkill = filter.dataset.techFilter || "";
+      activeTechFilter = activeTechFilter === nextSkill ? "" : nextSkill;
+
+      filters.forEach((item) => {
+        item.setAttribute(
+          "aria-pressed",
+          String(item.dataset.techFilter === activeTechFilter),
+        );
+      });
+
+      document.dispatchEvent(
+        new CustomEvent("tech-filter-change", {
+          detail: { skill: activeTechFilter },
+        }),
+      );
+      document.querySelector("#problem-solving")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  });
+</script>

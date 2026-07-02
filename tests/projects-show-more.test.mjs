@@ -12,6 +12,10 @@ const componentSource = readFileSync(
   new URL("../src/components/Projects.astro", import.meta.url),
   "utf8",
 );
+const aboutSource = readFileSync(
+  new URL("../src/components/About.astro", import.meta.url),
+  "utf8",
+);
 
 assert.ok(siteConfig.projects.length > 3, "Projects should have more than the initial visible batch");
 
@@ -25,8 +29,54 @@ for (const project of siteConfig.projects) {
 }
 
 assert.match(componentSource, /data-project-card/, "Projects component should mark revealable cards");
+assert.match(componentSource, /data-project-skills/, "Project cards should expose skills for filtering");
 assert.match(componentSource, /data-projects-show-more/, "Projects component should include a show-more control");
+assert.match(componentSource, /tech-filter-change/, "Projects component should listen for tech stack filters");
 assert.match(componentSource, /Solutions/, "Projects section should be framed as solutions");
 assert.match(componentSource, /project\.company/, "Project cards should render company metadata");
 assert.match(componentSource, /project\.year/, "Project cards should render year metadata");
 assert.doesNotMatch(componentSource, /0\{index \+ 1\}/, "Project cards should not render numeric prefixes");
+assert.match(aboutSource, /Tech Stack/, "Former about section should render as tech stack");
+assert.match(aboutSource, /data-tech-filter/, "Tech stack chips should be clickable filters");
+assert.doesNotMatch(aboutSource, /소개/, "Intro copy section should be removed");
+
+assert.match(componentSource, /data-detail-trigger/, "Project cards with detail should be clickable triggers");
+assert.match(componentSource, /data-detail-template/, "Detail cards should render a hidden detail template");
+assert.match(componentSource, /data-detail-modal/, "Projects component should include a detail modal shell");
+
+const detailProjects = siteConfig.projects.filter((project) => project.detail);
+assert.ok(detailProjects.length > 0, "At least one project should provide troubleshooting detail");
+
+for (const project of detailProjects) {
+  assert.ok(Array.isArray(project.detail.steps) && project.detail.steps.length > 0, `${project.name} detail should include timeline steps`);
+  for (const step of project.detail.steps) {
+    assert.ok(step.title, `${project.name} detail step should have a title`);
+    assert.ok(Array.isArray(step.blocks) && step.blocks.length > 0, `${project.name} step "${step.title}" should include content blocks`);
+  }
+  if (project.detail.metrics) {
+    for (const metric of project.detail.metrics) {
+      assert.ok(metric.label && metric.before && metric.after, `${project.name} metric should include label/before/after`);
+    }
+  }
+}
+
+assert.equal(
+  JSON.stringify(siteConfig.skills),
+  JSON.stringify([
+    "Java",
+    "Spring Boot",
+    "Spring",
+    "SQL",
+    "JPA",
+    "JUnit",
+    "JavaScript",
+    "TypeScript",
+    "Jenkins",
+    "SonarQube",
+    "Docker",
+    "Kubernetes",
+    "Claude Code",
+    "Codex",
+    "Cursor",
+  ]),
+);
