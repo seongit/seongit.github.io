@@ -1,0 +1,112 @@
+---
+interface Props {
+  value: string;
+  caption?: string;
+  lang?: string;
+}
+
+const { value, caption, lang } = Astro.props;
+const language = lang || "text";
+
+const keywordMap: Record<string, Set<string>> = {
+  bash: new Set(["kubectl", "df", "mount", "get", "describe"]),
+  java: new Set([
+    "byte",
+    "class",
+    "false",
+    "if",
+    "new",
+    "null",
+    "private",
+    "public",
+    "return",
+    "static",
+    "throw",
+    "true",
+    "try",
+    "void",
+  ]),
+  javascript: new Set(["const", "let", "var", "if", "throw", "new", "return"]),
+  yaml: new Set(["true", "false", "null"]),
+};
+
+const lines = value.split("\n").map((line) => highlightLine(line, language));
+const codeHtml = lines
+  .map(
+    (line, lineIndex) =>
+      `<span class="detail-code-line"><span class="detail-code-line-number" aria-hidden="true">${String(
+        lineIndex + 1,
+      ).padStart(2, "0")}</span><span class="detail-code-line-content">${
+        line.length > 0
+          ? line
+              .map(
+                (token) =>
+                  `<span class="detail-code-token detail-code-token-${token.kind}">${escapeHtml(
+                    token.value,
+                  )}</span>`,
+              )
+              .join("")
+          : "&nbsp;"
+      }</span></span>`,
+  )
+  .join("");
+
+function highlightLine(line: string, currentLang: string) {
+  const commentStart =
+    currentLang === "bash" || currentLang === "yaml" || currentLang === "text"
+      ? line.indexOf("#")
+      : line.indexOf("//");
+  const code =
+    commentStart >= 0 ? line.slice(0, commentStart) : line;
+  const comment =
+    commentStart >= 0 ? line.slice(commentStart) : "";
+
+  const tokens = code
+    .split(/(\s+|["'`][^"'`]*["'`]|--?[\w-]+|@\w+|\b\d+(?:\.\d+)?\b|\b[\w$-]+\b|[{}()[\].,:;=+\-*/<>!|&?]+)/g)
+    .filter(Boolean)
+    .map((token) => ({
+      value: token,
+      kind: tokenKind(token, code, currentLang),
+    }));
+
+  if (comment) tokens.push({ value: comment, kind: "comment" });
+  return tokens;
+}
+
+function tokenKind(token: string, line: string, currentLang: string) {
+  if (/^\s+$/.test(token)) return "plain";
+  if (/^["'`]/.test(token)) return "string";
+  if (/^--?[\w-]+$/.test(token)) return "flag";
+  if (/^@\w+$/.test(token)) return "decorator";
+  if (/^\d/.test(token)) return "number";
+  if (currentLang === "yaml" && line.match(new RegExp(`\\b${token}\\s*:`))) {
+    return "property";
+  }
+  if (keywordMap[currentLang]?.has(token)) return "keyword";
+  if (/^[{}()[\].,:;=+\-*/<>!|&?]+$/.test(token)) return "operator";
+  return "plain";
+}
+
+function escapeHtml(text: string) {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+---
+
+<figure class="detail-code" data-lang={language}>
+  <div class="detail-code-window" aria-label={`${language} code block`}>
+    <div class="detail-code-chrome" aria-hidden="true">
+      <span class="detail-code-dots">
+        <span class="detail-code-dot detail-code-dot-red"></span>
+        <span class="detail-code-dot detail-code-dot-yellow"></span>
+        <span class="detail-code-dot detail-code-dot-green"></span>
+      </span>
+      <span class="detail-code-lang">{language}</span>
+    </div>
+    <pre class="detail-code-scroll"><code set:html={codeHtml} /></pre>
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

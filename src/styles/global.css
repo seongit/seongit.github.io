@@ -401,16 +401,103 @@ body {
   margin-top: 0.75rem;
 }
 
-/* 코드 블록 — 본문은 sans, 코드만 mono */
 .detail-code {
   margin: 1rem 0 0;
 }
 
+.detail-code-window {
+  overflow: hidden;
+  background: color-mix(
+    in srgb,
+    var(--resume-color-surface-card) 88%,
+    var(--resume-color-text-default)
+  );
+  border: 1px solid var(--resume-color-line-subtle);
+  box-shadow: 0 1rem 2.5rem rgb(47 42 38 / 0.08);
+}
+
+.detail-code-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  background: color-mix(
+    in srgb,
+    var(--resume-color-surface-card) 72%,
+    var(--resume-color-text-default)
+  );
+  border-bottom: 1px solid var(--resume-color-line-subtle);
+}
+
+.detail-code-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-code-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgb(47 42 38 / 0.12);
+}
+
+.detail-code-dot-red {
+  background: #e26a5e;
+}
+
+.detail-code-dot-yellow {
+  background: #dca94a;
+}
+
+.detail-code-dot-green {
+  background: #6fa875;
+}
+
+.detail-code-lang {
+  font-family:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgb(47 42 38 / 0.56);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .detail-code pre {
   overflow-x: auto;
-  padding: 1rem 1.125rem;
-  background: rgb(47 42 38 / 0.05);
-  border: 1px solid var(--resume-color-line-subtle);
+  max-height: 22rem;
+  padding: 1rem 1.125rem 1.125rem;
+  background: transparent;
+}
+
+.detail-code-scroll {
+  scrollbar-color: rgb(200 100 79 / 0.42) transparent;
+  scrollbar-width: thin;
+}
+
+.detail-code-scroll::-webkit-scrollbar {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+.detail-code-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.detail-code-scroll::-webkit-scrollbar-thumb {
+  background: rgb(200 100 79 / 0.35);
+  border: 0.1875rem solid transparent;
+  background-clip: padding-box;
+}
+
+.detail-code-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(200 100 79 / 0.55);
+  background-clip: padding-box;
 }
 
 .detail-code code {
@@ -421,6 +508,72 @@ body {
   line-height: 1.6;
   color: var(--resume-color-text-default);
   white-space: pre;
+}
+
+.detail-code-line {
+  display: flex;
+  min-width: max-content;
+}
+
+.detail-code-line:hover {
+  background: rgb(200 100 79 / 0.06);
+}
+
+.detail-code-line-number {
+  flex: 0 0 2.25rem;
+  padding-right: 0.875rem;
+  color: rgb(47 42 38 / 0.34);
+  text-align: right;
+  user-select: none;
+}
+
+.detail-code-line:hover .detail-code-line-number {
+  color: rgb(200 100 79 / 0.78);
+}
+
+.detail-code-line-content {
+  flex: 1 0 auto;
+}
+
+.detail-code-token-comment {
+  color: #7c9b77;
+}
+
+.detail-code-token-string {
+  color: #b77b55;
+}
+
+.detail-code-token-keyword,
+.detail-code-token-decorator {
+  color: #bf5f68;
+  font-weight: 700;
+}
+
+.detail-code-token-flag,
+.detail-code-token-property {
+  color: #9a78a8;
+}
+
+.detail-code-token-number {
+  color: #b98d3d;
+}
+
+.detail-code-token-operator {
+  color: rgb(47 42 38 / 0.52);
+}
+
+.detail-code[data-lang="bash"] .detail-code-token-keyword {
+  color: #477f87;
+}
+
+.detail-code[data-lang="yaml"] .detail-code-token-property {
+  color: #b8644f;
+  font-weight: 700;
+}
+
+.detail-code[data-lang="java"] .detail-code-token-keyword,
+.detail-code[data-lang="javascript"] .detail-code-token-keyword {
+  color: #9a6aa9;
 }
 
 .detail-code figcaption,
@@ -443,10 +596,12 @@ body {
 
 /* 블로그 원문 링크 버튼 */
 .detail-blog-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: fit-content;
   margin-top: 2.25rem;
+  margin-left: auto;
   padding: 0.75rem 1.25rem;
   font-size: 0.875rem;
   font-weight: 700;

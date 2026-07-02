@@ -26,7 +26,7 @@ const hasBlogPosts = posts.length > 0;
                   href={post.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="group overflow-hidden border border-accent/25 bg-surface transition duration-300 hover:-translate-y-1 hover:border-accent"
+                  class="group flex h-full flex-col overflow-hidden border border-accent/25 bg-surface transition duration-300 hover:-translate-y-1 hover:border-accent"
                 >
                   <div class="aspect-[16/9] border-b border-ink/10">
                     {post.image ? (
@@ -43,7 +43,7 @@ const hasBlogPosts = posts.length > 0;
                     )}
                   </div>
 
-                  <div class="space-y-3 p-5">
+                  <div class="flex flex-1 flex-col gap-3 p-5">
                     {post.date && (
                       <p class="type-role text-xs text-ink/55">{post.date}</p>
                     )}
@@ -54,7 +54,7 @@ const hasBlogPosts = posts.length > 0;
                       {post.description}
                     </p>
                     <span
-                      class="inline-flex items-center gap-1 pt-2 text-sm font-bold text-accent transition-colors group-hover:text-ink"
+                      class="mt-auto inline-flex self-end items-center gap-1 pt-2 text-sm font-bold text-accent"
                     >
                       자세히 보기
                       <svg
