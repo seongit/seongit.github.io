@@ -385,7 +385,7 @@ body {
 }
 
 .detail-text {
-  max-width: 68ch;
+  width: 100%;
   font-size: 0.9375rem;
   line-height: 1.7;
   color: rgb(47 42 38 / 0.82);

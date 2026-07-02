@@ -16,6 +16,10 @@ const aboutSource = readFileSync(
   new URL("../src/components/About.astro", import.meta.url),
   "utf8",
 );
+const globalCssSource = readFileSync(
+  new URL("../src/styles/global.css", import.meta.url),
+  "utf8",
+);
 
 assert.ok(siteConfig.projects.length > 3, "Projects should have more than the initial visible batch");
 
@@ -43,6 +47,7 @@ assert.doesNotMatch(aboutSource, /소개/, "Intro copy section should be removed
 assert.match(componentSource, /data-detail-trigger/, "Project cards with detail should be clickable triggers");
 assert.match(componentSource, /data-detail-template/, "Detail cards should render a hidden detail template");
 assert.match(componentSource, /data-detail-modal/, "Projects component should include a detail modal shell");
+assert.doesNotMatch(globalCssSource, /\.detail-text\s*\{[^}]*max-width:\s*68ch/s, "Detail text should fill the detail body width");
 
 const detailProjects = siteConfig.projects.filter((project) => project.detail);
 assert.ok(detailProjects.length > 0, "At least one project should provide troubleshooting detail");
