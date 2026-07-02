@@ -62,3 +62,13 @@ The `src/config.ts` exports a `siteConfig` object with these sections:
 - projects: array of {name, description, link, skills}
 - experience: array of {company, title, dateRange, bullets}
 - education: array of {school, degree, dateRange, achievements}
+
+## 성과 상세 팝업(모달)
+
+성과/케이스 스터디 카드 클릭 시 뜨는 상세 모달을 추가·수정할 때는 아래 SSOT 스킬을 반드시 참조한다
+(데이터 스키마·컴포넌트 구조·모달 스크립트·스타일·검증 규칙 포함). 내용을 이 문서에 복사하지 말고 스킬을 따른다.
+
+- 스킬: `astro-detail-popup`
+- 프로젝트 심볼릭 링크: `.cursor/skills/astro-detail-popup/SKILL.md`
+- 원본(SSOT): `/Users/seongeun/workspace/ai-agent-rules/profiles/obsidian/.ai/skills/astro-detail-popup/SKILL.md`
+- 항상 적용되는 요약 규칙: `.cursor/rules/detail-popup.mdc`
