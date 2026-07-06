@@ -2,33 +2,6 @@
 import { siteConfig } from "../config";
 
 const { resumeHero, aboutMe } = siteConfig;
-
-const iconPaths = {
-  mail: [
-    "M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z",
-    "M3 7l9 6l9 -6",
-  ],
-  book: [
-    "M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
-    "M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0",
-    "M3 6v13",
-    "M12 6v13",
-    "M21 6v13",
-  ],
-  linkedin: [
-    "M8 11v5",
-    "M8 8v.01",
-    "M12 16v-5",
-    "M16 16v-3a2 2 0 0 0-4 0",
-    "M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2H5a2 2 0 0 1 -2 -2V5z",
-  ],
-  portfolio: [
-    "M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2H4a2 2 0 0 1 -2 -2V8a2 2 0 0 1 2 -2z",
-    "M12 12h.01",
-    "M16 6V4a2 2 0 0 0-2 -2h-4a2 2 0 0 0-2 2v2",
-    "M22 13a18.15 18.15 0 0 1 -20 0",
-  ],
-};
 ---
 
 <section id="hero" class="resume-hero bg-page">
@@ -60,45 +33,10 @@ const iconPaths = {
         <span class="h-px flex-1 bg-page/55"></span>
       </div>
 
-      <div
-        class="mt-8 grid w-full grid-cols-1 gap-4 text-page/85 sm:grid-cols-4 sm:divide-x sm:divide-page/35"
-      >
-        {
-          resumeHero.contacts.map((contact) => (
-            <a
-              href={contact.href}
-              aria-label={contact.label}
-              class="hero-contact-link flex flex-col items-center gap-2 px-4 py-1 transition-colors hover:text-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
-              {...(contact.href.startsWith("http")
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="hero-contact-icon h-5 w-5"
-                aria-hidden="true"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                {iconPaths[contact.icon].map((d) => (
-                  <path d={d} />
-                ))}
-              </svg>
-              <span class="text-xs font-medium sm:text-sm">{contact.text}</span>
-            </a>
-          ))
-        }
-      </div>
-
       <a
         href="/resume.pdf"
         data-resume-download
-        class="mt-6 hidden border border-page/45 px-4 py-2 text-xs font-bold uppercase tracking-normal text-page/85 transition-colors hover:border-page hover:text-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
+        class="mt-8 hidden border border-page/45 px-4 py-2 text-xs font-bold uppercase tracking-normal text-page/85 transition-colors hover:border-page hover:text-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
       >
         Download PDF
       </a>
@@ -268,24 +206,6 @@ const iconPaths = {
 </script>
 
 <style>
-  .hero-contact-link,
-  .hero-contact-icon {
-    transition:
-      color 180ms ease,
-      opacity 180ms ease,
-      transform 180ms ease;
-  }
-
-  .hero-contact-link:hover,
-  .hero-contact-link:focus-visible {
-    transform: translateY(-0.125rem);
-  }
-
-  .hero-contact-link:hover .hero-contact-icon,
-  .hero-contact-link:focus-visible .hero-contact-icon {
-    transform: translateY(-0.125rem);
-  }
-
   .rotator-unit {
     transform: translateY(0);
     opacity: 1;
@@ -324,17 +244,8 @@ const iconPaths = {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-contact-link,
-    .hero-contact-icon,
     .rotator-unit {
       transition: none;
-    }
-
-    .hero-contact-link:hover,
-    .hero-contact-link:focus-visible,
-    .hero-contact-link:hover .hero-contact-icon,
-    .hero-contact-link:focus-visible .hero-contact-icon {
-      transform: none;
     }
 
     .hero-evidence {
