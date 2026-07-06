@@ -48,5 +48,5 @@ assert.match(heroSource, /data-resume-download/);
 assert.match(heroSource, /data-resume-admin-form/);
 assert.match(heroSource, /data-resume-admin-input/);
 assert.match(heroSource, /PUBLIC_RESUME_ADMIN_PASSWORD/);
-assert.match(heroSource, /seongeun_resume_\$/);
+assert.match(heroSource, /김성은_포트폴리오\.pdf/);
 assert.doesNotMatch(heroSource, /window\.prompt/);
