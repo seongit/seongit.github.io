@@ -35,3 +35,6 @@ assert.match(heroSource, /resumeHero\.closing/);
 assert.doesNotMatch(heroSource, /data-name-underline/);
 assert.match(heroSource, /data-hero-evidence/);
 assert.match(heroSource, /hero-contact-link/);
+assert.match(heroSource, /data-resume-download/);
+assert.match(heroSource, /PUBLIC_RESUME_ADMIN_PASSWORD/);
+assert.match(heroSource, /seongeun_resume_\$/);

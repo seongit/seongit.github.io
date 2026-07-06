@@ -94,6 +94,14 @@ const iconPaths = {
           ))
         }
       </div>
+
+      <a
+        href="/resume.pdf"
+        data-resume-download
+        class="mt-6 hidden border border-page/45 px-4 py-2 text-xs font-bold uppercase tracking-normal text-page/85 transition-colors hover:border-page hover:text-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
+      >
+        Download PDF
+      </a>
     </div>
   </div>
 
@@ -133,7 +141,7 @@ const iconPaths = {
   </div>
 </section>
 
-<script is:inline>
+<script>
   const rotator = document.querySelector("[data-rotator-unit]");
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
@@ -163,6 +171,61 @@ const iconPaths = {
         rotator.classList.remove("is-changing");
       }, 180);
     }, 1800);
+  }
+
+  const resumeAdminPassword = import.meta.env.PUBLIC_RESUME_ADMIN_PASSWORD;
+  const resumeDownload = document.querySelector("[data-resume-download]");
+  const hero = document.getElementById("hero");
+  const adminSessionKey = "resumeAdminEnabled";
+  let heroClickCount = 0;
+  let heroClickTimer;
+
+  const formatResumeDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}${month}${day}`;
+  };
+
+  const showResumeDownload = () => {
+    resumeDownload?.classList.remove("hidden");
+  };
+
+  if (resumeDownload) {
+    resumeDownload.addEventListener("click", () => {
+      resumeDownload.setAttribute(
+        "download",
+        `seongeun_resume_${formatResumeDate(new Date())}.pdf`,
+      );
+    });
+  }
+
+  if (
+    resumeAdminPassword &&
+    resumeDownload &&
+    sessionStorage.getItem(adminSessionKey) === "true"
+  ) {
+    showResumeDownload();
+  }
+
+  if (resumeAdminPassword && hero && resumeDownload) {
+    hero.addEventListener("click", () => {
+      heroClickCount += 1;
+      window.clearTimeout(heroClickTimer);
+      heroClickTimer = window.setTimeout(() => {
+        heroClickCount = 0;
+      }, 2000);
+
+      if (heroClickCount < 5) return;
+
+      heroClickCount = 0;
+      window.clearTimeout(heroClickTimer);
+
+      if (window.prompt("Admin password") === resumeAdminPassword) {
+        sessionStorage.setItem(adminSessionKey, "true");
+        showResumeDownload();
+      }
+    });
   }
 </script>
 
