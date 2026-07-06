@@ -31,6 +31,12 @@ export const siteConfig = {
         href: "https://www.linkedin.com/in/seongit",
         icon: "linkedin",
       },
+      {
+        label: "Portfolio",
+        text: "Portfolio",
+        href: "https://seongit.github.io/",
+        icon: "portfolio",
+      },
     ],
   },
   // 첫 화면(100vh) 온보딩 히어로 카피/CTA. 모든 값은 이 한 곳에서 관리한다.

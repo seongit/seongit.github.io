@@ -24,6 +24,14 @@ assert.equal(
   JSON.stringify(siteConfig.resumeHero.rotatorWords),
   JSON.stringify(["지식", "경험", "노하우"]),
 );
+assert.equal(
+  siteConfig.resumeHero.contacts.some(
+    (contact) =>
+      contact.label === "Portfolio" &&
+      contact.href === "https://seongit.github.io/",
+  ),
+  true,
+);
 
 assert.match(heroSource, /data-rotator-word/);
 assert.doesNotMatch(heroSource, /data-rotator-progress/);
