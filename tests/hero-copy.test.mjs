@@ -36,5 +36,8 @@ assert.doesNotMatch(heroSource, /data-name-underline/);
 assert.match(heroSource, /data-hero-evidence/);
 assert.match(heroSource, /hero-contact-link/);
 assert.match(heroSource, /data-resume-download/);
+assert.match(heroSource, /data-resume-admin-form/);
+assert.match(heroSource, /data-resume-admin-input/);
 assert.match(heroSource, /PUBLIC_RESUME_ADMIN_PASSWORD/);
 assert.match(heroSource, /seongeun_resume_\$/);
+assert.doesNotMatch(heroSource, /window\.prompt/);

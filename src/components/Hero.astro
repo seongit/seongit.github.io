@@ -102,6 +102,26 @@ const iconPaths = {
       >
         Download PDF
       </a>
+
+      <form
+        data-resume-admin-form
+        class="mt-5 hidden w-full max-w-xs items-center gap-2"
+        aria-label="Resume admin password"
+      >
+        <input
+          data-resume-admin-input
+          type="password"
+          class="min-w-0 flex-1 border border-page/45 bg-transparent px-3 py-2 text-sm text-page placeholder:text-page/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
+          placeholder="Admin password"
+          autocomplete="current-password"
+        />
+        <button
+          type="submit"
+          class="border border-page/45 px-3 py-2 text-xs font-bold uppercase text-page/85 transition-colors hover:border-page hover:text-page focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-page/70"
+        >
+          OK
+        </button>
+      </form>
     </div>
   </div>
 
@@ -175,6 +195,8 @@ const iconPaths = {
 
   const resumeAdminPassword = import.meta.env.PUBLIC_RESUME_ADMIN_PASSWORD;
   const resumeDownload = document.querySelector("[data-resume-download]");
+  const resumeAdminForm = document.querySelector("[data-resume-admin-form]");
+  const resumeAdminInput = document.querySelector("[data-resume-admin-input]");
   const hero = document.getElementById("hero");
   const adminSessionKey = "resumeAdminEnabled";
   let heroClickCount = 0;
@@ -189,6 +211,14 @@ const iconPaths = {
 
   const showResumeDownload = () => {
     resumeDownload?.classList.remove("hidden");
+    resumeAdminForm?.classList.add("hidden");
+    resumeAdminForm?.classList.remove("flex");
+  };
+
+  const showResumeAdminForm = () => {
+    resumeAdminForm?.classList.remove("hidden");
+    resumeAdminForm?.classList.add("flex");
+    resumeAdminInput?.focus();
   };
 
   if (resumeDownload) {
@@ -208,7 +238,19 @@ const iconPaths = {
     showResumeDownload();
   }
 
-  if (resumeAdminPassword && hero && resumeDownload) {
+  if (resumeAdminPassword && resumeAdminForm && resumeAdminInput) {
+    resumeAdminForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (resumeAdminInput.value === resumeAdminPassword) {
+        sessionStorage.setItem(adminSessionKey, "true");
+        resumeAdminInput.value = "";
+        showResumeDownload();
+      }
+    });
+  }
+
+  if (resumeAdminPassword && hero && resumeDownload && resumeAdminForm) {
     hero.addEventListener("click", () => {
       heroClickCount += 1;
       window.clearTimeout(heroClickTimer);
@@ -220,11 +262,7 @@ const iconPaths = {
 
       heroClickCount = 0;
       window.clearTimeout(heroClickTimer);
-
-      if (window.prompt("Admin password") === resumeAdminPassword) {
-        sessionStorage.setItem(adminSessionKey, "true");
-        showResumeDownload();
-      }
+      showResumeAdminForm();
     });
   }
 </script>
