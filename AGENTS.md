@@ -41,7 +41,7 @@ The project follows a component-based architecture with all customization centra
 - The site uses Tailwind CSS v4 with the Vite plugin configuration
 - No linting or testing framework is currently configured
 - All components are in `.astro` format (not React/Vue/etc)
-- The project uses IBM Plex Mono font loaded from Google Fonts
+- The project uses Noto Sans KR for resume/body text and DM Sans for role/title text, loaded from Google Fonts
 - Social links in the config are all optional and will conditionally render
 
 ## Working with Components
@@ -49,7 +49,7 @@ The project follows a component-based architecture with all customization centra
 When modifying components:
 1. Components read directly from the imported `siteConfig` object
 2. Use Tailwind utility classes for styling
-3. Maintain the existing monospace font aesthetic
+3. Maintain the existing resume typography from `src/styles/global.css`
 4. Use Tabler Icons for consistency with existing icons
 
 ## Resume UI Guidelines
