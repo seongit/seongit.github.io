@@ -8,8 +8,8 @@ alwaysApply: true
 성과 카드 클릭 시 트러블슈팅 과정을 단계형으로 보여주는 상세 모달 작업 시 이 규칙을 따른다.
 상세 구현 가이드(데이터 스키마·컴포넌트·스크립트·스타일·검증)는 SSOT 스킬을 참조한다.
 
-- 스킬: `astro-detail-popup` (프로젝트 심볼릭 링크: `.cursor/skills/astro-detail-popup/SKILL.md`)
-- 원본(SSOT): `/Users/seongeun/workspace/ai-agent-rules/profiles/obsidian/.ai/skills/astro-detail-popup/SKILL.md`
+- 스킬: `obsidian:astro-detail-popup` (ai-agent-rules 마켓플레이스의 `obsidian` 플러그인)
+- 원본(SSOT): ai-agent-rules 저장소의 `plugins/obsidian/skills/astro-detail-popup/SKILL.md`
 
 ## 반드시 지킬 불변 규칙
 
